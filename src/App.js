@@ -1,20 +1,17 @@
-import React from "react";
-import { Route, Switch, withRouter } from "react-router-dom";
-import routes from "./routes";
+import './App.css';
+import { Grid } from "@material-ui/core";
+import Header from './components/templates/Header';
+import Content from './components/templates/Content';
 
 const App = () => {
   return (
-    <Switch>
-      {routes.map((route, idx) => (
-        <Route
-          path={route.path}
-          exact={route.exact}
-          component={route.component}
-          key={idx}
-        />
-      ))}
-    </Switch>
+    <Grid container direction="column">
+      <Header />
+      <div style={{ padding: 30 }}>
+        <Content />
+      </div>
+    </Grid>
   );
 };
 
-export default withRouter(App);
+export default App;
