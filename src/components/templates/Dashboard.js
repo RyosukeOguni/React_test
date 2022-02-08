@@ -12,36 +12,19 @@ import IconButton from "@mui/material/IconButton";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { mainListItems } from "./listItems";
-
 import { Routes, Route } from "react-router-dom";
-import Tablink from "./Tablink";
-import Manual from "../page/manual";
-import Brand from "../page/brand";
-import Goods from "../page/goods";
+import Management from "../page/management";
+import Manual from "../page/management/manual";
+import Brand from "../page/management/brand";
+import Goods from "../page/management/goods";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import Other1 from "../page/other1";
+import Other2 from "../page/other2";
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -90,7 +73,7 @@ const Drawer = styled(MuiDrawer, {
 const mdTheme = createTheme();
 
 function DashboardContent() {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -145,7 +128,7 @@ function DashboardContent() {
           <Divider />
           <List component="nav">{mainListItems}</List>
         </Drawer>
-        
+
         <Box
           component="main"
           sx={{
@@ -164,16 +147,18 @@ function DashboardContent() {
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                  <Tablink />
                   <Routes>
-                    <Route path="/" element={<Manual />} />
-                    <Route path="/goods" element={<Goods />} />
-                    <Route path="/brand" element={<Brand />} />
+                    <Route path="/" element={<Management />}>
+                      <Route path="manual" index element={<Manual />} />
+                      <Route path="goods" element={<Goods />} />
+                      <Route path="brand" element={<Brand />} />
+                    </Route>
+                    <Route path="/other1" element={<Other1 />} />
+                    <Route path="/other2" element={<Other2 />} />
                   </Routes>{" "}
                 </Paper>
               </Grid>
             </Grid>
-            <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
       </Box>
