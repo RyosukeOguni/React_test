@@ -1,5 +1,5 @@
 import './App.css';
-import { Grid } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import Header from './components/templates/Header';
 import Content from './components/templates/Content';
 
