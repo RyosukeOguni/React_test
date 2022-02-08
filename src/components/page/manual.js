@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import {
   Table,
@@ -22,17 +21,10 @@ class Manual extends React.Component {
       this.setState({ persons });
     });
   }
-
+  
   render() {
     return (
       <div>
-        <div>
-          マニュアル管理
-          <br />
-          <Link to="/goods">商品管理</Link>
-          <Link to="/brand">ブランド名管理</Link>
-        </div>
-
         <TableContainer component={Paper}>
           <Table>
             <TableHead>

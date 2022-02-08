@@ -25,14 +25,7 @@ class Goods extends React.Component {
 
   render() {
     return (
-      <div>
-        <div>
-          <Link to="/">マニュアル管理</Link>
-          商品管理
-          <br />
-          <Link to="/brand">ブランド管理</Link>
-        </div>
-        
+      <div>        
         <TableContainer component={Paper}>
           <Table>
             <TableHead>

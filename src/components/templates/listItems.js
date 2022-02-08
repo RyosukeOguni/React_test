@@ -9,30 +9,24 @@ import { Link } from 'react-router-dom'
 
 export const mainListItems = (
   <React.Fragment>
-    <Link to="/">
-    <ListItemButton>
+    <ListItemButton to="/" component={Link}>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
-      <ListItemText primary="マニュアル管理" />
+      <ListItemText primary="管理画面"  />
     </ListItemButton>
-    </Link>
-    <Link to="/goods">
-    <ListItemButton>
+    <ListItemButton  to="/other1" component={Link}>
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
-      <ListItemText primary="商品管理" />
+      <ListItemText primary="その他１" />
     </ListItemButton>
-    </Link>
-    <Link to="/brand">
-    <ListItemButton>
+    <ListItemButton to="/other2" component={Link} >
       <ListItemIcon>
         <LayersIcon />
       </ListItemIcon>
-      <ListItemText primary="ブランド名管理" />
+      <ListItemText primary="その他２" />
     </ListItemButton>
-    </Link>
   </React.Fragment>
 );
 

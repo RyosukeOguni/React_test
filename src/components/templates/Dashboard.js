@@ -18,6 +18,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { mainListItems } from "./listItems";
 
 import { Routes, Route } from "react-router-dom";
+import Tablink from "./Tablink";
 import Manual from "../page/manual";
 import Brand from "../page/brand";
 import Goods from "../page/goods";
@@ -123,7 +124,7 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              管理画面
+              SRL医療業務システム
             </Typography>
           </Toolbar>
         </AppBar>
@@ -144,6 +145,7 @@ function DashboardContent() {
           <Divider />
           <List component="nav">{mainListItems}</List>
         </Drawer>
+        
         <Box
           component="main"
           sx={{
@@ -162,6 +164,7 @@ function DashboardContent() {
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+                  <Tablink />
                   <Routes>
                     <Route path="/" element={<Manual />} />
                     <Route path="/goods" element={<Goods />} />

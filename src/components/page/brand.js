@@ -26,13 +26,6 @@ class Brand extends React.Component {
   render() {
     return (
       <div>
-        <div>
-          <Link to="/">マニュアル管理</Link>
-          <Link to="/goods">商品管理</Link>
-          ブランド管理
-          <br />
-        </div>
-
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
