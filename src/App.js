@@ -1,17 +1,14 @@
 import './App.css';
-import { Grid } from "@mui/material";
-import Header from './components/templates/Header';
-import Content from './components/templates/Content';
+// import Header from './components/templates/Header';
+// import Content from './components/templates/Content';
+import DashboardContent from './components/templates/Dashboard';
 
 const App = () => {
   return (
-    <Grid container direction="column">
-      <Header />
-      <div style={{ padding: 30 }}>
-        <Content />
-      </div>
-    </Grid>
+    <DashboardContent />
   );
 };
 
 export default App;
+
+
