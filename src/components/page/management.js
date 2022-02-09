@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid } from "@mui/material";
+import { Grid } from "@material-ui/core";
 import { Routes, Route } from "react-router-dom";
 import Tablink from "../templates/Tablink";
 import Manual from "../page/management/manual";

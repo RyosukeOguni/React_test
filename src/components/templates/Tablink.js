@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Tabs, Tab, Box } from "@mui/material";
+import { Tabs, Tab, Box } from "@material-ui/core";
 
 function Tablink() {
   const [value, setValue] = React.useState("manual");
