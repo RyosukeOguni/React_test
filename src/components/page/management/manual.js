@@ -18,20 +18,76 @@ const Manual = () => {
   return (
     <MaterialTable
       columns={[
-        { title: "ID", field: "id" },
-        { title: "商品カテゴリID", field: "goods_category_id" },
-        { title: "ブランドID", field: "brand_id" },
-        { title: "商品画像", field: "goods_image" },
-        { title: "商品名", field: "goods_name" },
-        { title: "卸し価格", field: "oroshi_price" },
-        { title: "状態", field: "is_active" },
-        { title: "登録日", field: "created_at" },
-        { title: "更新日", field: "updated_at" },
-        { title: "削除日", field: "deleted_at" },
+        { title: "ID", field: "id", headerStyle: { whiteSpace: "nowrap" } },
+        {
+          title: "カテゴリID",
+          field: "goods_category_id",
+          headerStyle: { whiteSpace: "nowrap" },
+        },
+        {
+          title: "ブランドID",
+          field: "brand_id",
+          headerStyle: { whiteSpace: "nowrap" },
+        },
+        {
+          title: "画像",
+          field: "goods_image",
+          headerStyle: { whiteSpace: "nowrap" },
+          cellStyle: {
+            maxWidth: "200px",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+          },
+        },
+        {
+          title: "商品名",
+          field: "goods_name",
+          headerStyle: { whiteSpace: "nowrap" },
+        },
+        {
+          title: "卸価格",
+          field: "oroshi_price",
+          headerStyle: { whiteSpace: "nowrap" },
+        },
+        {
+          title: "状態",
+          field: "is_active",
+          headerStyle: { whiteSpace: "nowrap" },
+        },
+        {
+          title: "登録日",
+          field: "created_at",
+          type: "datetime",
+          headerStyle: { whiteSpace: "nowrap" },
+          cellStyle: {
+            whiteSpace: "nowrap",
+          },
+        },
+        {
+          title: "更新日",
+          field: "updated_at",
+          type: "datetime",
+          headerStyle: { whiteSpace: "nowrap" },
+          cellStyle: {
+            whiteSpace: "nowrap",
+          },
+        },
+        {
+          title: "削除日",
+          field: "deleted_at",
+          type: "datetime",
+          headerStyle: { whiteSpace: "nowrap" },
+          cellStyle: {
+            whiteSpace: "nowrap",
+          },
+        },
       ]}
       data={data}
       options={{
         showTitle: false,
+        sorting: true,
+        selection: true,
       }}
     />
   );
