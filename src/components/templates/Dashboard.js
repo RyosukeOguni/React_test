@@ -20,7 +20,6 @@ import { mainListItems } from "./listItems";
 import { Routes, Route } from "react-router-dom";
 import Home from "../page/home";
 import Management from "../page/management";
-import Manual from "../page/management/manual";
 import Brand from "../page/management/brand";
 import Goods from "../page/management/goods";
 import Other1 from "../page/other1";
