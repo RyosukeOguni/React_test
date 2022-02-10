@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Grid } from "@material-ui/core";
 import { Routes, Route } from "react-router-dom";
 import Tablink from "../templates/Tablink";
@@ -11,9 +11,9 @@ const Management = () => {
     <Grid item xs={12}>
       <Tablink />
       <Routes>
-        <Route path="/manual" element={<Manual />} />
-        <Route path="/goods" element={<Goods />} />
-        <Route path="/brand" element={<Brand />} />
+        <Route index element={<Manual />} />
+        <Route path="goods" element={<Goods />} />
+        <Route path="brand" element={<Brand />} />
       </Routes>
     </Grid>
   );

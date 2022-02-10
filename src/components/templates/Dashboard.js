@@ -178,9 +178,8 @@ export default function Dashboard() {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/management" element={<Management />}>
-                    <Route path="/management/manual" element={<Manual />} />
-                    <Route path="/management/goods" element={<Goods />} />
-                    <Route path="/management/brand" element={<Brand />} />
+                    <Route path="goods" element={<Goods />} />
+                    <Route path="brand" element={<Brand />} />
                   </Route>
                   <Route path="/other1" element={<Other1 />} />
                   <Route path="/other2" element={<Other2 />} />

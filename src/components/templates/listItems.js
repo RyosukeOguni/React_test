@@ -16,7 +16,7 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="HOME" />
     </ListItem>
-    <ListItem button to="/management/manual" component={Link}>
+    <ListItem button to="/management" component={Link}>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
