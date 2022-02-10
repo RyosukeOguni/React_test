@@ -16,12 +16,12 @@ function Tablink() {
         onChange={handleChange}
         aria-label="wrapped label tabs example"
       >
-        <Tab value="manual" label="マニュアル管理" to="/" component={Link} />
-        <Tab value="goods" label="商品管理" to="goods" component={Link} />
+        <Tab value="manual" label="マニュアル管理" to="/management/manual" component={Link} />
+        <Tab value="goods" label="商品管理" to="/management/goods" component={Link} />
         <Tab
           value="brand"
           label="ブランド名管理"
-          to="brand"
+          to="/management/brand"
           component={Link}
         />
       </Tabs>

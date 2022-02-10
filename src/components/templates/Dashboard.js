@@ -18,11 +18,11 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { mainListItems } from "./listItems";
 import { Routes, Route } from "react-router-dom";
+import Home from "../page/home";
 import Management from "../page/management";
 import Manual from "../page/management/manual";
 import Brand from "../page/management/brand";
 import Goods from "../page/management/goods";
-
 import Other1 from "../page/other1";
 import Other2 from "../page/other2";
 
@@ -176,10 +176,11 @@ export default function Dashboard() {
             <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <Routes>
-                  <Route path="/" element={<Management />}>
-                    <Route path="/" index element={<Manual />} />
-                    <Route path="goods" element={<Goods />} />
-                    <Route path="brand" element={<Brand />} />
+                  <Route path="/" element={<Home />} />
+                  <Route path="/management" element={<Management />}>
+                    <Route path="/management/manual" element={<Manual />} />
+                    <Route path="/management/goods" element={<Goods />} />
+                    <Route path="/management/brand" element={<Brand />} />
                   </Route>
                   <Route path="/other1" element={<Other1 />} />
                   <Route path="/other2" element={<Other2 />} />

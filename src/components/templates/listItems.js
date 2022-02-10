@@ -1,5 +1,6 @@
 import React from "react";
 import ListItem from "@material-ui/core/ListItem";
+import HomeIcon from '@material-ui/icons/Home';
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import DashboardIcon from "@material-ui/icons/Dashboard";
@@ -10,6 +11,12 @@ import { Link } from "react-router-dom";
 export const mainListItems = (
   <div>
     <ListItem button to="/" component={Link}>
+      <ListItemIcon>
+        <HomeIcon />
+      </ListItemIcon>
+      <ListItemText primary="HOME" />
+    </ListItem>
+    <ListItem button to="/management/manual" component={Link}>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
