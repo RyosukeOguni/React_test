@@ -18,9 +18,9 @@ const Manual = () => {
   }, []);
 
   const handleDialogClose = () => {
-    setStatus({open: false})
-  }
-  
+    setStatus({ open: false });
+  };
+
   return (
     <div>
       <MaterialTable
