@@ -11,7 +11,7 @@ const Manual = () => {
   // domレンダリング後にaxiosを実行
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios("http://localhost:8000/api/manual");
+      const result = await axios.get("http://localhost:8000/api/manual");
       setData(result.data);
     };
     fetchData();

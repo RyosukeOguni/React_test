@@ -9,7 +9,7 @@ const Brand = () => {
   // domレンダリング後にaxiosを実行
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios("http://localhost:8000/api/brand");
+      const result = await axios.get("http://localhost:8000/api/brand");
       setData(result.data);
     };
     fetchData();

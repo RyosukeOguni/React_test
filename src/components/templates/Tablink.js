@@ -10,7 +10,7 @@ function Tablink() {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box fullWidth>
       <Tabs
         value={value}
         onChange={handleChange}

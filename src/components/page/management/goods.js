@@ -9,7 +9,7 @@ const Goods = () => {
   // domレンダリング後にaxiosを実行
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios("http://localhost:8000/api/goods");
+      const result = await axios.get("http://localhost:8000/api/goods");
       setData(result.data);
     };
     fetchData();
