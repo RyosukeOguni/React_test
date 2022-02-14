@@ -12,7 +12,6 @@ import {
 const ManualDialog = ({ status, handleDialogClose }) => {
   // useState（）でstate変数とそのsetterを返す
   const [data, setData] = useState({});
-
   useEffect(() => {
     const fetchData = async () => {
       if (status.open) {
@@ -38,7 +37,13 @@ const ManualDialog = ({ status, handleDialogClose }) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleDialogClose} color="primary">
+        <Button
+          onClick={() => {
+            handleDialogClose();
+            setData({});
+          }}
+          color="primary"
+        >
           OK
         </Button>
       </DialogActions>
