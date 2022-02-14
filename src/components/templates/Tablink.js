@@ -10,7 +10,7 @@ function Tablink() {
   };
 
   return (
-    <Box fullWidth>
+    <Box>
       <Tabs
         value={value}
         onChange={handleChange}

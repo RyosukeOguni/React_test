@@ -176,7 +176,7 @@ export default function Dashboard() {
               <Paper className={classes.paper}>
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/management" element={<Management />}>
+                  <Route path="/management/*" element={<Management />}>
                     <Route path="goods" element={<Goods />} />
                     <Route path="brand" element={<Brand />} />
                   </Route>
