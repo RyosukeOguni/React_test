@@ -8,7 +8,7 @@ import {
   Button,
   TextField,
   Grid,
-} from "@material-ui/core";
+} from "@mui/material";
 
 const ManualDialog = ({ status, handleDialogClose }) => {
   // useStateでstate変数とそのsetterを返す（React Hooks）

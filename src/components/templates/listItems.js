@@ -1,38 +1,38 @@
-import React from "react";
-import ListItem from "@material-ui/core/ListItem";
-import HomeIcon from '@material-ui/icons/Home';
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import PeopleIcon from "@material-ui/icons/People";
-import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
+import * as React from "react";
 import { Link } from "react-router-dom";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import HomeIcon from "@mui/icons-material/Home";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import PeopleIcon from "@mui/icons-material/People";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 
 export const mainListItems = (
-  <div>
-    <ListItem button to="/" component={Link}>
+  <React.Fragment>
+    <ListItemButton to="/" component={Link}>
       <ListItemIcon>
         <HomeIcon />
       </ListItemIcon>
       <ListItemText primary="HOME" />
-    </ListItem>
-    <ListItem button to="/management" component={Link}>
+    </ListItemButton>
+    <ListItemButton to="/management" component={Link}>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="管理画面" />
-    </ListItem>
-    <ListItem button to="/other1" component={Link}>
+    </ListItemButton>
+    <ListItemButton to="/other1" component={Link}>
       <ListItemIcon>
         <LibraryBooksIcon />
       </ListItemIcon>
       <ListItemText primary="その他１" />
-    </ListItem>
-    <ListItem button to="/other2" component={Link}>
+    </ListItemButton>
+    <ListItemButton to="/other2" component={Link}>
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
       <ListItemText primary="その他２" />
-    </ListItem>
-  </div>
+    </ListItemButton>
+  </React.Fragment>
 );
