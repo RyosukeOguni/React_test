@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import MaterialTable from "material-table";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Button,
-} from "@material-ui/core";
+import ManualDialog from "./manual_dialog";
 
 const Manual = () => {
   // useState（）でstate変数とそのsetterを返す
   const [data, setData] = useState([]);
-  const [status, setStatus] = React.useState({ open: false, rowData: {} });
+  const [status, setStatus] = useState({ open: false, id: null });
 
   // domレンダリング後にaxiosを実行
   useEffect(() => {
@@ -24,6 +17,10 @@ const Manual = () => {
     fetchData();
   }, []);
 
+  const handleDialogClose = () => {
+    setStatus({open: false})
+  }
+  
   return (
     <div>
       <MaterialTable
@@ -102,34 +99,10 @@ const Manual = () => {
         }}
         onRowClick={(event, rowData) => {
           event.preventDefault();
-
-          setStatus({ open: true, rowData: rowData });
+          setStatus({ open: true, id: rowData.id });
         }}
       />
-      <Dialog
-        open={status.open}
-        fullWidth
-        maxWidth="lg"
-      >
-        <DialogTitle id="draggable-dialog-title">Detail</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Contact: {status.rowData.goods_category_id}
-            <br />
-            Contact: {status.rowData.brand_id}
-            <br />
-            Contact: {status.rowData.goods_name}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => setStatus({ open: false, rowData: status.rowData })}
-            color="primary"
-          >
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <ManualDialog status={status} handleDialogClose={handleDialogClose} />
     </div>
   );
 };
