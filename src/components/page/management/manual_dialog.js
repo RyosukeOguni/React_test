@@ -24,25 +24,18 @@ const ManualDialog = ({ status, handleDialogClose, handleDialogPut }) => {
   useEffect(() => {
     const fetchData = async () => {
       if (status.open) {
-        const result = await axios.get(
-          `http://localhost:8000/api/manual/${status.id}`
-        );
-        setData(result.data);
+        await axios
+        .get(`http://localhost:8000/api/manual/${status.id}`)
+        .then((response) => {
+          setData(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       }
     };
     fetchData();
   }, [status]);
-
-  // 更新（Put）
-  const putData = async () => {
-    // Objectをjson文字列に変換してjsonに変換
-    const obj = JSON.parse(JSON.stringify(data));
-    const result = await axios.put(
-      `http://localhost:8000/api/manual/${status.id}`,
-      obj
-    );
-    setData(result.data);
-  };
 
   return (
     <Dialog open={status.open} fullWidth maxWidth="lg">
@@ -94,7 +87,6 @@ const ManualDialog = ({ status, handleDialogClose, handleDialogPut }) => {
       <DialogActions sx={{ padding: 2 }}>
         <Button
           onClick={() => {
-            putData();
             handleDialogPut(data);
             handleDialogClose();
             setData({});

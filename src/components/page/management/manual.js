@@ -54,17 +54,32 @@ export default function Manual() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios("http://localhost:8000/api/manual");
-      setRows(result.data);
+      await axios
+        .get("http://localhost:8000/api/manual")
+        .then((response) => {
+          setRows(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     };
     fetchData();
   }, []);
 
-  const handleDialogPut = (data) => {
-    const result = rows.map((row) => {
-      return row.id === data.id ? data : row;
-    });
-    setRows(result);
+  const handleDialogPut = async (data) => {
+    // Objectをjson文字列に変換してjsonに変換
+    const json = JSON.parse(JSON.stringify(data));
+    await axios
+      .put(`http://localhost:8000/api/manual/${data.id}`, json)
+      .then((response) => {
+        const result = rows.map((row) => {
+          return row.id === response.data.id ? response.data : row;
+        });
+        setRows(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleDialogClose = () => {
@@ -80,7 +95,6 @@ export default function Manual() {
         .then((response) => {
           console.log(response);
           alert("ID:" + json + "を削除しました");
-
           const result = rows.filter((row) => !selected.includes(row.id));
           setRows(result);
           setSelected([]);
