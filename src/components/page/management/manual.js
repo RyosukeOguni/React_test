@@ -12,6 +12,8 @@ import axios from "axios";
 import EnhancedTableHead from "./EnhancedTableHead";
 import EnhancedTableToolbar from "./EnhancedTableToolbar";
 import ManualDialog from "./manual_dialog";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -168,7 +170,6 @@ export default function Manual() {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <EnhancedTableHead
@@ -188,15 +189,7 @@ export default function Manual() {
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
-                    <TableRow
-                      hover
-                      onClick={(event) => setStatus({ open: true, id: row.id })}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                    >
+                    <TableRow hover tabIndex={-1} key={row.id}>
                       <TableCell
                         onClick={(event) => handleClick(event, row.id)}
                         padding="checkbox"
@@ -208,6 +201,19 @@ export default function Manual() {
                             "aria-labelledby": labelId,
                           }}
                         />
+                      </TableCell>
+                      <TableCell
+                        onClick={(event) =>
+                          setStatus({ open: true, id: row.id })
+                        }
+                      >
+                        <IconButton
+                          onClick={(event) =>
+                            setStatus({ open: true, id: row.id })
+                          }
+                        >
+                          <EditIcon color="primary" />
+                        </IconButton>
                       </TableCell>
                       <TableCell
                         component="th"
@@ -233,6 +239,7 @@ export default function Manual() {
             </TableBody>
           </Table>
         </TableContainer>
+        <EnhancedTableToolbar numSelected={selected.length} />
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"

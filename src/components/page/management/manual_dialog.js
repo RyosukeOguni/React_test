@@ -48,7 +48,7 @@ const ManualDialog = ({ status, handleDialogClose }) => {
     <Dialog open={status.open} fullWidth maxWidth="lg">
       <DialogTitle id="draggable-dialog-title">ID:{data.id}</DialogTitle>
       <DialogContent>
-        <Grid container spacing={1} xs={12}>
+        <Grid container spacing={1}>
           <Grid item xs={12} sm={6}>
             <TextField
               required
