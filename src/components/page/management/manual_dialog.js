@@ -10,7 +10,7 @@ import {
   Grid,
 } from "@mui/material";
 
-const ManualDialog = ({ status, handleDialogClose }) => {
+const ManualDialog = ({ status, handleDialogClose, handleDialogPut }) => {
   // useStateでstate変数とそのsetterを返す（React Hooks）
   const [data, setData] = useState({});
 
@@ -91,10 +91,11 @@ const ManualDialog = ({ status, handleDialogClose }) => {
           </Grid>
         </Grid>
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{ padding: 2 }}>
         <Button
           onClick={() => {
             putData();
+            handleDialogPut(data);
             handleDialogClose();
             setData({});
           }}

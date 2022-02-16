@@ -60,6 +60,13 @@ export default function Manual() {
     fetchData();
   }, []);
 
+  const handleDialogPut = (data) => {
+    const result = rows.map((row) => {
+      return row.id === data.id ? data : row;
+    })
+      setRows(result);
+  };
+  
   const handleDialogClose = () => {
     setStatus({ open: false });
   };
@@ -250,7 +257,7 @@ export default function Manual() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <ManualDialog status={status} handleDialogClose={handleDialogClose} />
+      <ManualDialog status={status} handleDialogClose={handleDialogClose} handleDialogPut={handleDialogPut}/>
     </Box>
   );
 }
