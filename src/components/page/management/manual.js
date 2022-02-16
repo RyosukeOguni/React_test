@@ -63,12 +63,31 @@ export default function Manual() {
   const handleDialogPut = (data) => {
     const result = rows.map((row) => {
       return row.id === data.id ? data : row;
-    })
-      setRows(result);
+    });
+    setRows(result);
   };
-  
+
   const handleDialogClose = () => {
     setStatus({ open: false });
+  };
+
+  const selectDelete = async () => {
+    const json = selected;
+    // 非同期通信でapiにjsonで削除対象を送信
+    !!json.length &&
+      (await axios
+        .post("http://localhost:8000/api/manual/selectdelete", json)
+        .then((response) => {
+          console.log(response);
+          alert("ID:" + json + "を削除しました");
+
+          const result = rows.filter((row) => !selected.includes(row.id));
+          setRows(result);
+          setSelected([]);
+        })
+        .catch((error) => {
+          console.log(error);
+        }));
   };
 
   const headCells = [
@@ -246,7 +265,10 @@ export default function Manual() {
             </TableBody>
           </Table>
         </TableContainer>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          selectDelete={selectDelete}
+        />
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
@@ -257,7 +279,11 @@ export default function Manual() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <ManualDialog status={status} handleDialogClose={handleDialogClose} handleDialogPut={handleDialogPut}/>
+      <ManualDialog
+        status={status}
+        handleDialogClose={handleDialogClose}
+        handleDialogPut={handleDialogPut}
+      />
     </Box>
   );
 }
