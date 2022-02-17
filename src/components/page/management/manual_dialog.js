@@ -26,6 +26,20 @@ const ManualDialog = ({ status, handleDialogClose }) => {
     setData({ ...data, [event.target.name]: event.target.value });
   };
 
+  // 登録（Post）
+  const dataPostApi = async (data) => {
+    // Objectをjson文字列に変換してjsonに変換
+    const json = JSON.parse(JSON.stringify(data));
+    await axios
+      .post("http://localhost:8000/api/manual", json)
+      .then((response) => {
+        handleDialogClose({ type: type, data: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   // 更新（Put）
   const dataPutApi = async (data) => {
     // Objectをjson文字列に変換してjsonに変換
@@ -88,16 +102,36 @@ const ManualDialog = ({ status, handleDialogClose }) => {
         </Grid>
       </DialogContent>
       <DialogActions sx={{ padding: 2 }}>
-        <Button
-          onClick={() => {
-            dataPutApi(data);
-            handleDialogClose({ type: type, data: data });
-          }}
-          variant="contained"
-          color="primary"
-        >
-          更新
-        </Button>
+        {(() => {
+          if (type === "put") {
+            return (
+              <Button
+                onClick={() => {
+                  dataPutApi(data);
+                  handleDialogClose({ type: type, data: data });
+                }}
+                variant="contained"
+                color="primary"
+              >
+                更新
+              </Button>
+            );
+          } else if (type === "post") {
+            return (
+              <Button
+                onClick={() => {
+                  dataPostApi(data);
+                  handleDialogClose({ type: type, data: data });
+                }}
+                variant="contained"
+                color="primary"
+              >
+                登録
+              </Button>
+            );
+          }
+        })()}
+
         <Button
           onClick={() => {
             handleDialogClose({ type: "" });

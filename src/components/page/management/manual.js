@@ -8,6 +8,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
+import Button from "@mui/material/Button";
 import axios from "axios";
 import EnhancedTableHead from "./EnhancedTableHead";
 import EnhancedTableToolbar from "./EnhancedTableToolbar";
@@ -90,7 +91,7 @@ export default function Manual() {
       setRows(result);
       setStatus(initial);
     } else if (type === "post") {
-      setRows([data, ...rows]);
+      setRows([...rows, data]);
       setStatus(initial);
     } else {
       setStatus(initial);
@@ -220,6 +221,16 @@ export default function Manual() {
 
   return (
     <Box sx={{ width: "100%" }}>
+      <Button
+        onClick={() => {
+          setStatus({ open: true, obj: {}, type: "post" });
+        }}
+        variant="contained"
+        color="primary"
+      >
+        新規作成
+      </Button>
+
       <Paper sx={{ width: "100%", mb: 2 }}>
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
