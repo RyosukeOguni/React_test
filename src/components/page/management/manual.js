@@ -50,7 +50,7 @@ export default function Manual() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState([]);
-  const [status, setStatus] = useState({ open: false, id: null });
+  const [status, setStatus] = useState({ open: false, id: null, type: "" });
 
   // 取得（Index）
   useEffect(() => {
@@ -67,24 +67,21 @@ export default function Manual() {
     fetchData();
   }, []);
 
-  // 更新（Put）
-  const handleDialogPut = async (data) => {
-    // Objectをjson文字列に変換してjsonに変換
-    const json = JSON.parse(JSON.stringify(data));
-    await axios
-      .put(`http://localhost:8000/api/manual/${data.id}`, json)
-      .then((response) => {
-        const result = rows.map((row) => {
-          return row.id === response.data.id ? response.data : row;
-        });
-        setRows(result);
-      })
-      .catch((error) => {
-        console.log(error);
+  // 一覧表のstate変更とDialogのclose
+  const handleDialogClose = async ({ type, data }) => {
+    if (type === "put") {
+      const result = rows.map((row) => {
+        return row.id === data.id ? data : row;
       });
+      setRows(result);
+      setStatus({ open: false });
+    } else if (type === "post") {
+      setRows([data, ...rows]);
+      setStatus({ open: false });
+    } else {
+      setStatus({ open: false });
+    }
   };
-
-
 
   // 削除（Delete）
   const selectDelete = async () => {
@@ -104,10 +101,6 @@ export default function Manual() {
         }));
   };
 
-  const handleDialogClose = () => {
-    setStatus({ open: false });
-  };
-  
   const headCells = [
     {
       field: "id",
@@ -248,14 +241,10 @@ export default function Manual() {
                       </TableCell>
                       <TableCell
                         onClick={(event) =>
-                          setStatus({ open: true, id: row.id })
+                          setStatus({ open: true, id: row.id, type: "put" })
                         }
                       >
-                        <IconButton
-                          onClick={(event) =>
-                            setStatus({ open: true, id: row.id })
-                          }
-                        >
+                        <IconButton>
                           <EditIcon color="primary" />
                         </IconButton>
                       </TableCell>
@@ -297,11 +286,7 @@ export default function Manual() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <ManualDialog
-        status={status}
-        handleDialogClose={handleDialogClose}
-        handleDialogPut={handleDialogPut}
-      />
+      <ManualDialog status={status} handleDialogClose={handleDialogClose} />
     </Box>
   );
 }

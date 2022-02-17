@@ -10,7 +10,9 @@ import {
   Grid,
 } from "@mui/material";
 
-const ManualDialog = ({ status, handleDialogClose, handleDialogPut }) => {
+const ManualDialog = ({ status, handleDialogClose }) => {
+  const { open, id, type } = status;
+
   // useStateでstate変数とそのsetterを返す（React Hooks）
   const [data, setData] = useState({});
 
@@ -20,25 +22,39 @@ const ManualDialog = ({ status, handleDialogClose, handleDialogPut }) => {
     setData({ ...data, [event.target.name]: event.target.value });
   };
 
+  // 更新（Put）
+  const dataPutApi = async (data) => {
+    // Objectをjson文字列に変換してjsonに変換
+    const json = JSON.parse(JSON.stringify(data));
+    await axios
+      .put(`http://localhost:8000/api/manual/${data.id}`, json)
+      .then((response) => {
+        handleDialogClose({ type: type, data: response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   // 取得（Show）※DOMを読み込んでから値を適用
   useEffect(() => {
     const fetchData = async () => {
-      if (status.open) {
+      if (open) {
         await axios
-        .get(`http://localhost:8000/api/manual/${status.id}`)
-        .then((response) => {
-          setData(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+          .get(`http://localhost:8000/api/manual/${id}`)
+          .then((response) => {
+            setData(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
     };
     fetchData();
-  }, [status]);
+  }, [open, id]);
 
   return (
-    <Dialog open={status.open} fullWidth maxWidth="lg">
+    <Dialog open={open} fullWidth maxWidth="lg">
       <DialogTitle id="draggable-dialog-title">ID:{data.id}</DialogTitle>
       <DialogContent>
         <Grid container spacing={1}>
@@ -87,8 +103,8 @@ const ManualDialog = ({ status, handleDialogClose, handleDialogPut }) => {
       <DialogActions sx={{ padding: 2 }}>
         <Button
           onClick={() => {
-            handleDialogPut(data);
-            handleDialogClose();
+            dataPutApi(data);
+            handleDialogClose({ type: type, data: data });
             setData({});
           }}
           variant="contained"
@@ -98,7 +114,7 @@ const ManualDialog = ({ status, handleDialogClose, handleDialogPut }) => {
         </Button>
         <Button
           onClick={() => {
-            handleDialogClose();
+            handleDialogClose({ type: "" });
             setData({});
           }}
           color="primary"
