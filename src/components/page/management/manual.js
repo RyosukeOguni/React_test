@@ -52,6 +52,7 @@ export default function Manual() {
   const [rows, setRows] = useState([]);
   const [status, setStatus] = useState({ open: false, id: null });
 
+  // 取得（Index）
   useEffect(() => {
     const fetchData = async () => {
       await axios
@@ -66,6 +67,7 @@ export default function Manual() {
     fetchData();
   }, []);
 
+  // 更新（Put）
   const handleDialogPut = async (data) => {
     // Objectをjson文字列に変換してjsonに変換
     const json = JSON.parse(JSON.stringify(data));
@@ -82,13 +84,11 @@ export default function Manual() {
       });
   };
 
-  const handleDialogClose = () => {
-    setStatus({ open: false });
-  };
 
+
+  // 削除（Delete）
   const selectDelete = async () => {
     const json = selected;
-    // 非同期通信でapiにjsonで削除対象を送信
     !!json.length &&
       (await axios
         .post("http://localhost:8000/api/manual/selectdelete", json)
@@ -104,6 +104,10 @@ export default function Manual() {
         }));
   };
 
+  const handleDialogClose = () => {
+    setStatus({ open: false });
+  };
+  
   const headCells = [
     {
       field: "id",
