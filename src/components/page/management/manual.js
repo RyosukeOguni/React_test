@@ -219,9 +219,15 @@ export default function Manual() {
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%", position: "relative" }}>
       <Button
+        sx={{ position: "absolute", right: 10, top: -30 }}
         onClick={() => {
           setStatus({ open: true, obj: {}, type: "post" });
         }}
@@ -230,10 +236,12 @@ export default function Manual() {
       >
         新規作成
       </Button>
-
       <Paper sx={{ width: "100%", mb: 2 }}>
         <TableContainer>
-          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+          <Table
+            sx={{ minWidth: 750, tableLayout: "fixed" }}
+            aria-labelledby="tableTitle"
+          >
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
@@ -285,12 +293,25 @@ export default function Manual() {
                         {row.goods_category_id}
                       </TableCell>
                       <TableCell align="right">{row.brand_id}</TableCell>
-                      <TableCell align="right">{row.goods_image}</TableCell>
-                      <TableCell align="right">{row.goods_name}</TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          overflow: "hidden",
+                          whiteSpace: "nowrap",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {row.goods_image}
+                      </TableCell>
+                      <TableCell align="left">{row.goods_name}</TableCell>
                       <TableCell align="right">{row.oroshi_price}</TableCell>
                       <TableCell align="right">{row.is_active}</TableCell>
-                      <TableCell align="right">{row.created_at}</TableCell>
-                      <TableCell align="right">{row.updated_at}</TableCell>
+                      <TableCell align="left">
+                        {formatDate(row.created_at)}
+                      </TableCell>
+                      <TableCell align="left">
+                        {formatDate(row.updated_at)}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
