@@ -50,7 +50,7 @@ export default function Manual() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState([]);
-  const [status, setStatus] = useState({ open: false, id: null, type: "" });
+  const [status, setStatus] = useState({ open: false, obj: {}, type: "" });
 
   // 取得（Index）
   useEffect(() => {
@@ -67,19 +67,31 @@ export default function Manual() {
     fetchData();
   }, []);
 
+  // 取得（Show）※DOMを読み込んでから値を適用
+  const showApi = async (id) => {
+    await axios
+      .get(`http://localhost:8000/api/manual/${id}`)
+      .then((response) => {
+        setStatus({ open: true, obj: response.data, type: "put" });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   // 一覧表のstate変更とDialogのclose
-  const handleDialogClose = async ({ type, data }) => {
+  const handleDialogClose = ({ type, data }) => {
     if (type === "put") {
       const result = rows.map((row) => {
         return row.id === data.id ? data : row;
       });
       setRows(result);
-      setStatus({ open: false });
+      setStatus({ ...status, open: false });
     } else if (type === "post") {
       setRows([data, ...rows]);
-      setStatus({ open: false });
+      setStatus({ ...status, open: false });
     } else {
-      setStatus({ open: false });
+      setStatus({ ...status, open: false });
     }
   };
 
@@ -240,9 +252,9 @@ export default function Manual() {
                         />
                       </TableCell>
                       <TableCell
-                        onClick={(event) =>
-                          setStatus({ open: true, id: row.id, type: "put" })
-                        }
+                        onClick={(event) => {
+                          showApi(row.id);
+                        }}
                       >
                         <IconButton>
                           <EditIcon color="primary" />

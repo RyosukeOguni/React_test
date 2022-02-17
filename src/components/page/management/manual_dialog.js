@@ -11,10 +11,13 @@ import {
 } from "@mui/material";
 
 const ManualDialog = ({ status, handleDialogClose }) => {
-  const { open, id, type } = status;
-
+  const { open, obj, type } = status;
   // useStateでstate変数とそのsetterを返す（React Hooks）
   const [data, setData] = useState({});
+
+  useEffect(() => {
+    setData(obj);
+  }, [obj]);
 
   // Formの値を変更
   const handleChange = (event) => {
@@ -36,26 +39,11 @@ const ManualDialog = ({ status, handleDialogClose }) => {
       });
   };
 
-  // 取得（Show）※DOMを読み込んでから値を適用
-  useEffect(() => {
-    const fetchData = async () => {
-      if (open) {
-        await axios
-          .get(`http://localhost:8000/api/manual/${id}`)
-          .then((response) => {
-            setData(response.data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    };
-    fetchData();
-  }, [open, id]);
-
   return (
     <Dialog open={open} fullWidth maxWidth="lg">
-      <DialogTitle id="draggable-dialog-title">ID:{data.id}</DialogTitle>
+      <DialogTitle id="draggable-dialog-title">
+        {/* ID:{data.id} */}
+      </DialogTitle>
       <DialogContent>
         <Grid container spacing={1}>
           <Grid item xs={12} sm={6}>
