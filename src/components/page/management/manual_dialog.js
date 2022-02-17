@@ -11,10 +11,11 @@ import {
 } from "@mui/material";
 
 const ManualDialog = ({ status, handleDialogClose }) => {
+  // propsの値を分割代入
   const { open, obj, type } = status;
   // useStateでstate変数とそのsetterを返す（React Hooks）
   const [data, setData] = useState({});
-
+  // status(obj)の値が変わる毎に処理を実行　※DOMを読み込んでから値を適用
   useEffect(() => {
     setData(obj);
   }, [obj]);
@@ -41,9 +42,7 @@ const ManualDialog = ({ status, handleDialogClose }) => {
 
   return (
     <Dialog open={open} fullWidth maxWidth="lg">
-      <DialogTitle id="draggable-dialog-title">
-        {/* ID:{data.id} */}
-      </DialogTitle>
+      <DialogTitle id="draggable-dialog-title">ID:{data.id}</DialogTitle>
       <DialogContent>
         <Grid container spacing={1}>
           <Grid item xs={12} sm={6}>
@@ -93,7 +92,6 @@ const ManualDialog = ({ status, handleDialogClose }) => {
           onClick={() => {
             dataPutApi(data);
             handleDialogClose({ type: type, data: data });
-            setData({});
           }}
           variant="contained"
           color="primary"
@@ -103,7 +101,6 @@ const ManualDialog = ({ status, handleDialogClose }) => {
         <Button
           onClick={() => {
             handleDialogClose({ type: "" });
-            setData({});
           }}
           color="primary"
         >

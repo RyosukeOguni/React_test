@@ -43,6 +43,8 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
+const initial = { open: false, obj: {}, type: "" };
+
 export default function Manual() {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -50,9 +52,9 @@ export default function Manual() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [rows, setRows] = useState([]);
-  const [status, setStatus] = useState({ open: false, obj: {}, type: "" });
+  const [status, setStatus] = useState(initial);
 
-  // 取得（Index）
+  // 取得（Index）※DOMを読み込んでから値を適用
   useEffect(() => {
     const fetchData = async () => {
       await axios
@@ -67,7 +69,7 @@ export default function Manual() {
     fetchData();
   }, []);
 
-  // 取得（Show）※DOMを読み込んでから値を適用
+  // 取得（Show）
   const showApi = async (id) => {
     await axios
       .get(`http://localhost:8000/api/manual/${id}`)
@@ -86,12 +88,12 @@ export default function Manual() {
         return row.id === data.id ? data : row;
       });
       setRows(result);
-      setStatus({ ...status, open: false });
+      setStatus(initial);
     } else if (type === "post") {
       setRows([data, ...rows]);
-      setStatus({ ...status, open: false });
+      setStatus(initial);
     } else {
-      setStatus({ ...status, open: false });
+      setStatus(initial);
     }
   };
 
