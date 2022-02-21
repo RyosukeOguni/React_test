@@ -21,6 +21,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import EnhancedTableHead from "./EnhancedTableHead";
 import EnhancedTableToolbar from "./EnhancedTableToolbar";
+import { restfulApiConfig } from "../../../config";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -53,6 +54,8 @@ function stableSort(array, comparator) {
 // statusを初期化
 const initial = { open: false, obj: {}, type: "" };
 
+const endpoint = "manual";
+
 export default function Manual() {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("calories");
@@ -66,7 +69,7 @@ export default function Manual() {
   useEffect(() => {
     const fetchData = async () => {
       await axios
-        .get("http://localhost:8000/api/manual")
+        .get(restfulApiConfig.apiURL + endpoint)
         .then((response) => {
           setRows(response.data);
         })
@@ -80,7 +83,7 @@ export default function Manual() {
   // 取得（Show）
   const showApi = async (id) => {
     await axios
-      .get(`http://localhost:8000/api/manual/${id}`)
+      .get(restfulApiConfig.apiURL + endpoint + `/${id}`)
       .then((response) => {
         setStatus({ open: true, obj: response.data, type: "put" });
       })
@@ -107,7 +110,7 @@ export default function Manual() {
     const json = selected;
     !!json.length &&
       (await axios
-        .post("http://localhost:8000/api/manual/selectdelete", json)
+        .post(restfulApiConfig.apiURL + endpoint + "/selectdelete", json)
         .then((response) => {
           console.log(response);
           alert("ID:" + json + "を削除しました");
@@ -385,7 +388,7 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
     // Objectをjson文字列に変換してjsonに変換
     const json = JSON.parse(JSON.stringify(data));
     await axios
-      .post("http://localhost:8000/api/manual", json)
+      .post(restfulApiConfig.apiURL + endpoint, json)
       .then((response) => {
         handleDialogClose({ type: type, data: response.data });
       })
@@ -399,7 +402,7 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
     // Objectをjson文字列に変換してjsonに変換
     const json = JSON.parse(JSON.stringify(data));
     await axios
-      .put(`http://localhost:8000/api/manual/${obj.id}`, json)
+      .put(restfulApiConfig.apiURL + endpoint + `/${obj.id}`, json)
       .then((response) => {
         handleDialogClose({ type: type, data: response.data });
       })
