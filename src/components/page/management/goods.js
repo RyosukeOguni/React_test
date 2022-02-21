@@ -17,6 +17,7 @@ import {
   Checkbox,
   Button,
   IconButton,
+  DialogActions,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import EnhancedTableHead from "./EnhancedTableHead";
@@ -382,7 +383,9 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
       }}
       ref={forwardRef}
     >
-      <Typography variant="h2">ID:{obj.id}</Typography>
+      <Typography variant="h4">
+        {type === "post" ? "新規作成" : `ID:${obj.id}`}
+      </Typography>
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <TextField
@@ -401,27 +404,29 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
           />
         </Grid>
       </Grid>
-      <Button
-        onClick={handleSubmit(onSubmit)}
-        variant="contained"
-        color="primary"
-      >
-        {(() => {
-          if (type === "put") {
-            return "更新";
-          } else if (type === "post") {
-            return "登録";
-          }
-        })()}
-      </Button>
-      <Button
-        onClick={() => {
-          handleDialogClose({ type: "" });
-        }}
-        color="primary"
-      >
-        キャンセル
-      </Button>
+      <DialogActions>
+        <Button
+          onClick={handleSubmit(onSubmit)}
+          variant="contained"
+          color="primary"
+        >
+          {(() => {
+            if (type === "put") {
+              return "更新";
+            } else if (type === "post") {
+              return "登録";
+            }
+          })()}
+        </Button>
+        <Button
+          onClick={() => {
+            handleDialogClose({ type: "" });
+          }}
+          color="primary"
+        >
+          キャンセル
+        </Button>
+      </DialogActions>
     </Box>
   );
 };
