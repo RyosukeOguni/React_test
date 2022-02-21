@@ -9,12 +9,13 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
 import axios from "axios";
 import EnhancedTableHead from "./EnhancedTableHead";
 import EnhancedTableToolbar from "./EnhancedTableToolbar";
-import ManualDialog from "./manual_dialog";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
+import ManualModal from "./manual_modal";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -224,6 +225,10 @@ export default function Manual() {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  const body = (
+    <ManualModal status={status} handleDialogClose={handleDialogClose} />
+  );
+
   return (
     <Box sx={{ width: "100%", position: "relative" }}>
       <Button
@@ -332,7 +337,8 @@ export default function Manual() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <ManualDialog status={status} handleDialogClose={handleDialogClose} />
+
+      <Modal open={status.open}>{body}</Modal>
     </Box>
   );
 }

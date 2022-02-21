@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import ManualDialog from "./manual_dialog";
+import ManualModal from "./manual_modal";
 import { DataGrid } from "@mui/x-data-grid";
 
 const Brand = () => {
@@ -53,7 +53,7 @@ const Brand = () => {
         rowsPerPageOptions={[5]}
         checkboxSelection
       />
-      <ManualDialog status={status} handleDialogClose={handleDialogClose} />
+      <ManualModal status={status} handleDialogClose={handleDialogClose} />
     </div>
   );
 };
