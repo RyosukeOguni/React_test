@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -225,9 +225,16 @@ export default function Manual() {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  const body = (
-    <ManualModal status={status} handleDialogClose={handleDialogClose} />
-  );
+  const RefModal = forwardRef(({ status, handleDialogClose }, ref) => {
+    // RefModal という HOC を作成して ManualModal の forwardRef に ref を渡している
+    return (
+      <ManualModal
+        status={status}
+        handleDialogClose={handleDialogClose}
+        forwardRef={ref}
+      />
+    );
+  });
 
   return (
     <Box sx={{ width: "100%", position: "relative" }}>
@@ -338,7 +345,11 @@ export default function Manual() {
         />
       </Paper>
 
-      <Modal open={status.open}>{body}</Modal>
+      <Modal open={status.open}>
+        <>
+          <RefModal status={status} handleDialogClose={handleDialogClose} />
+        </>
+      </Modal>
     </Box>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { Button, TextField, Box, Grid, Typography  } from "@mui/material";
+import { Button, TextField, Box, Grid, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 
 const style = {
@@ -14,7 +14,7 @@ const style = {
   p: 2,
 };
 
-const ManualModal = ({ status, handleDialogClose }) => {
+const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
   // propsの値を分割代入
   const { obj, type } = status;
 
@@ -54,7 +54,7 @@ const ManualModal = ({ status, handleDialogClose }) => {
   };
 
   return (
-    <Box sx={style}>
+    <Box sx={style} ref={forwardRef}>
       <Typography variant="h2">ID:{obj.id}</Typography>
       <Grid container spacing={1}>
         <Grid item xs={12} sm={6}>
