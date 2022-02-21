@@ -53,8 +53,65 @@ function stableSort(array, comparator) {
 
 // statusを初期化
 const initial = { open: false, obj: {}, type: "" };
-
+// ApiEndpoint
 const endpoint = "manual";
+// テーブル項目
+const headCells = [
+  {
+    field: "id",
+    numeric: false,
+    disablePadding: true,
+    label: "ID",
+  },
+  {
+    field: "goods_category_id",
+    numeric: false,
+    disablePadding: false,
+    label: "カテゴリID",
+  },
+  {
+    field: "brand_id",
+    numeric: false,
+    disablePadding: false,
+    label: "ブランドID",
+  },
+  {
+    field: "goods_image",
+    numeric: false,
+    disablePadding: false,
+    label: "画像",
+  },
+  {
+    field: "goods_name",
+    numeric: false,
+    disablePadding: false,
+    label: "商品名",
+  },
+  {
+    field: "oroshi_price",
+    numeric: true,
+    disablePadding: false,
+    label: "卸価格",
+  },
+  {
+    field: "is_active",
+    numeric: true,
+    disablePadding: false,
+    label: "状態",
+  },
+  {
+    field: "created_at",
+    numeric: false,
+    disablePadding: false,
+    label: "登録日",
+  },
+  {
+    field: "updated_at",
+    numeric: false,
+    disablePadding: false,
+    label: "更新日",
+  },
+];
 
 export default function Manual() {
   const [order, setOrder] = useState("asc");
@@ -92,7 +149,7 @@ export default function Manual() {
       });
   };
 
-  // 一覧表のstate変更とDialogのclose
+  // 一覧表のstate変更とModalclose
   const handleDialogClose = ({ type, data }) => {
     if (type === "put") {
       const result = rows.map((row) => {
@@ -123,63 +180,6 @@ export default function Manual() {
         }));
   };
 
-  const headCells = [
-    {
-      field: "id",
-      numeric: false,
-      disablePadding: true,
-      label: "ID",
-    },
-    {
-      field: "goods_category_id",
-      numeric: false,
-      disablePadding: false,
-      label: "カテゴリID",
-    },
-    {
-      field: "brand_id",
-      numeric: false,
-      disablePadding: false,
-      label: "ブランドID",
-    },
-    {
-      field: "goods_image",
-      numeric: false,
-      disablePadding: false,
-      label: "画像",
-    },
-    {
-      field: "goods_name",
-      numeric: false,
-      disablePadding: false,
-      label: "商品名",
-    },
-    {
-      field: "oroshi_price",
-      numeric: true,
-      disablePadding: false,
-      label: "卸価格",
-    },
-    {
-      field: "is_active",
-      numeric: true,
-      disablePadding: false,
-      label: "状態",
-    },
-    {
-      field: "created_at",
-      numeric: false,
-      disablePadding: false,
-      label: "登録日",
-    },
-    {
-      field: "updated_at",
-      numeric: false,
-      disablePadding: false,
-      label: "更新日",
-    },
-  ];
-
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -198,7 +198,6 @@ export default function Manual() {
   const handleClick = (event, id) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
-
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
@@ -211,7 +210,6 @@ export default function Manual() {
         selected.slice(selectedIndex + 1)
       );
     }
-
     setSelected(newSelected);
   };
 
@@ -362,20 +360,9 @@ export default function Manual() {
   );
 }
 
-const modal_style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 500,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 2,
-};
-
 const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
   const { obj, type } = status;
-
+  // Hook Formの設定
   const { register, handleSubmit } = useForm();
 
   // フォーム送信時の処理
@@ -412,7 +399,19 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
   };
 
   return (
-    <Box sx={modal_style} ref={forwardRef}>
+    <Box
+      sx={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: 500,
+        bgcolor: "background.paper",
+        boxShadow: 24,
+        p: 4,
+      }}
+      ref={forwardRef}
+    >
       <Typography variant="h2">ID:{obj.id}</Typography>
       <Grid container spacing={1}>
         <Grid item xs={12} sm={6}>
