@@ -1,22 +1,26 @@
 import React, { useState, useEffect, forwardRef } from "react";
-import Box from "@mui/material/Box";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
+import { useForm } from "react-hook-form";
 import axios from "axios";
+import {
+  Modal,
+  Grid,
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TablePagination,
+  TableRow,
+  Paper,
+  Typography,
+  TextField,
+  Checkbox,
+  Button,
+  IconButton,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 import EnhancedTableHead from "./EnhancedTableHead";
 import EnhancedTableToolbar from "./EnhancedTableToolbar";
-import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import { TextField, Grid, Typography } from "@mui/material";
-import { useForm } from "react-hook-form";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -46,14 +50,15 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
+// statusを初期化
 const initial = { open: false, obj: {}, type: "" };
 
 export default function Manual() {
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState("calories");
+  const [selected, setSelected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rows, setRows] = useState([]);
   const [status, setStatus] = useState(initial);
 
@@ -91,13 +96,10 @@ export default function Manual() {
         return row.id === data.id ? data : row;
       });
       setRows(result);
-      setStatus(initial);
     } else if (type === "post") {
       setRows([...rows, data]);
-      setStatus(initial);
-    } else {
-      setStatus(initial);
     }
+    setStatus(initial);
   };
 
   // 削除（Delete）
@@ -221,11 +223,13 @@ export default function Manual() {
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
+  // TimeStamp型を日本の日付（年月日）に変換
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  // モーダル内のコンポーネントにpropsする為にforwardRefする
   const RefModal = forwardRef(({ status, handleDialogClose }, ref) => {
     // RefModal という HOC を作成して ManualModal の forwardRef に ref を渡している
     return (
@@ -345,8 +349,8 @@ export default function Manual() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-
       <Modal open={status.open}>
+        {/* 空要素でくくる事でエラーを解消 */}
         <>
           <RefModal status={status} handleDialogClose={handleDialogClose} />
         </>
@@ -355,7 +359,7 @@ export default function Manual() {
   );
 }
 
-const style = {
+const modal_style = {
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -405,7 +409,7 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
   };
 
   return (
-    <Box sx={style} ref={forwardRef}>
+    <Box sx={modal_style} ref={forwardRef}>
       <Typography variant="h2">ID:{obj.id}</Typography>
       <Grid container spacing={1}>
         <Grid item xs={12} sm={6}>
