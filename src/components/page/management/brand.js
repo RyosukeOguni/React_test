@@ -22,6 +22,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import EnhancedTableHead from "./EnhancedTableHead";
 import EnhancedTableToolbar from "./EnhancedTableToolbar";
 import { restfulApiConfig } from "../../../config";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -93,6 +95,15 @@ const headCells = [
     label: "更新日",
   },
 ];
+// バリデーションルール
+const schema = yup.object({
+  abbreviation: yup.string().required("入力してください"),
+  brand_name: yup.string().required("入力してください"),
+  brand_name_jp: yup
+    .string()
+    .required("入力してください")
+    .min(6, "6文字以上で入力してください"),
+});
 
 export default function Manual() {
   const [order, setOrder] = useState("asc");
@@ -327,7 +338,14 @@ export default function Manual() {
 const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
   const { obj, type } = status;
 
-  const { register, handleSubmit } = useForm();
+  // Hook Formの設定※
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   // フォーム送信時の処理
   const onSubmit = (data) => {
@@ -389,6 +407,8 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
               obj.abbreviation === undefined ? "" : obj.abbreviation
             }
             margin="normal"
+            error={"abbreviation" in errors}
+            helperText={errors.abbreviation?.message}
             fullWidth
           />
         </Grid>
@@ -401,6 +421,8 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
             type={"text"}
             defaultValue={obj.brand_name === undefined ? "" : obj.brand_name}
             margin="normal"
+            error={"brand_name" in errors}
+            helperText={errors.brand_name?.message}
             fullWidth
           />
         </Grid>
@@ -415,6 +437,8 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
               obj.brand_name_jp === undefined ? "" : obj.brand_name_jp
             }
             margin="normal"
+            error={"brand_name_jp" in errors}
+            helperText={errors.brand_name_jp?.message}
             fullWidth
           />
         </Grid>

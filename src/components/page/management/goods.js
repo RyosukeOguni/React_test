@@ -22,6 +22,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import EnhancedTableHead from "./EnhancedTableHead";
 import EnhancedTableToolbar from "./EnhancedTableToolbar";
 import { restfulApiConfig } from "../../../config";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -83,6 +85,13 @@ const headCells = [
     label: "更新日",
   },
 ];
+// バリデーションルール
+const schema = yup.object({
+  goods_category: yup
+    .string()
+    .required("入力してください")
+    .min(6, "6文字以上で入力してください"),
+});
 
 export default function Manual() {
   const [order, setOrder] = useState("asc");
@@ -317,7 +326,14 @@ export default function Manual() {
 const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
   const { obj, type } = status;
 
-  const { register, handleSubmit } = useForm();
+  // Hook Formの設定※
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   // フォーム送信時の処理
   const onSubmit = (data) => {
@@ -379,6 +395,8 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
               obj.goods_category === undefined ? "" : obj.goods_category
             }
             margin="normal"
+            error={"goods_category" in errors}
+            helperText={errors.goods_category?.message}
             fullWidth
           />
         </Grid>

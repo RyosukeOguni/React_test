@@ -22,6 +22,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import EnhancedTableHead from "./EnhancedTableHead";
 import EnhancedTableToolbar from "./EnhancedTableToolbar";
 import { restfulApiConfig } from "../../../config";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -115,6 +117,15 @@ const headCells = [
     label: "更新日",
   },
 ];
+// バリデーションルール
+const schema = yup.object({
+  goods_category_id: yup.string().required("入力してください"),
+  brand_id: yup.string().required("入力してください"),
+  goods_name: yup
+    .string()
+    .required("入力してください")
+    .min(6, "6文字以上で入力してください"),
+});
 
 export default function Manual() {
   const [order, setOrder] = useState("asc");
@@ -342,8 +353,15 @@ export default function Manual() {
 
 const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
   const { obj, type } = status;
-  // Hook Formの設定
-  const { register, handleSubmit } = useForm();
+  
+  // Hook Formの設定※
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   // フォーム送信時の処理
   const onSubmit = (data) => {
@@ -405,6 +423,8 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
               obj.goods_category_id === undefined ? "" : obj.goods_category_id
             }
             margin="normal"
+            error={"goods_category_id" in errors}
+            helperText={errors.goods_category_id?.message}
             fullWidth
           />
         </Grid>
@@ -417,6 +437,8 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
             type={"number"}
             defaultValue={obj.brand_id === undefined ? "" : obj.brand_id}
             margin="normal"
+            error={"brand_id" in errors}
+            helperText={errors.brand_id?.message}
             fullWidth
           />
         </Grid>
@@ -429,6 +451,8 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
             type={"text"}
             defaultValue={obj.goods_name === undefined ? "" : obj.goods_name}
             margin="normal"
+            error={"goods_name" in errors}
+            helperText={errors.goods_name?.message}
             fullWidth
           />
         </Grid>
