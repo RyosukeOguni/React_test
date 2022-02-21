@@ -37,12 +37,11 @@ export default function EnhancedTableHead(props) {
             }}
           />
         </TableCell>
-        <TableCell>編集</TableCell>
+        <TableCell sx={{ whiteSpace: "nowrap" }}>編集</TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.field}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
+            align={headCell.type === "numeric" ? "right" : "left"}
             sortDirection={orderBy === headCell.field ? order : false}
             sx={{ whiteSpace: "nowrap" }}
           >

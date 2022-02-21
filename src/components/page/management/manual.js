@@ -51,6 +51,12 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
+// TimeStamp型を日本の日付（年月日）に変換
+const formatDate = (dateString) => {
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
+
 // statusを初期化
 const initial = { open: false, obj: {}, type: "" };
 // ApiEndpoint
@@ -59,56 +65,48 @@ const endpoint = "manual";
 const headCells = [
   {
     field: "id",
-    numeric: false,
-    disablePadding: true,
+    type: "numeric",
     label: "ID",
   },
   {
     field: "goods_category_id",
-    numeric: false,
-    disablePadding: false,
+    type: "numeric",
     label: "カテゴリID",
   },
   {
     field: "brand_id",
-    numeric: false,
-    disablePadding: false,
+    type: "numeric",
     label: "ブランドID",
   },
   {
     field: "goods_image",
-    numeric: false,
-    disablePadding: false,
+    type: "text",
     label: "画像",
+    sx: { overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" },
   },
   {
     field: "goods_name",
-    numeric: false,
-    disablePadding: false,
+    type: "text",
     label: "商品名",
   },
   {
     field: "oroshi_price",
-    numeric: true,
-    disablePadding: false,
+    type: "numeric",
     label: "卸価格",
   },
   {
     field: "is_active",
-    numeric: true,
-    disablePadding: false,
+    type: "numeric",
     label: "状態",
   },
   {
     field: "created_at",
-    numeric: false,
-    disablePadding: false,
+    type: "timestamp",
     label: "登録日",
   },
   {
     field: "updated_at",
-    numeric: false,
-    disablePadding: false,
+    type: "timestamp",
     label: "更新日",
   },
 ];
@@ -224,12 +222,6 @@ export default function Manual() {
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
-  // TimeStamp型を日本の日付（年月日）に変換
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-
   // モーダル内のコンポーネントにpropsする為にforwardRefする
   const RefModal = forwardRef(({ status, handleDialogClose }, ref) => {
     // RefModal という HOC を作成して ManualModal の forwardRef に ref を渡している
@@ -257,7 +249,7 @@ export default function Manual() {
       <Paper sx={{ width: "100%", mb: 2 }}>
         <TableContainer>
           <Table
-            sx={{ minWidth: 750, tableLayout: "fixed" }}
+            sx={{  minWidth: 1200, tableLayout: "fixed" }}
             aria-labelledby="tableTitle"
           >
             <EnhancedTableHead
@@ -299,37 +291,23 @@ export default function Manual() {
                           <EditIcon color="primary" />
                         </IconButton>
                       </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.id}
-                      </TableCell>
-                      <TableCell align="right">
-                        {row.goods_category_id}
-                      </TableCell>
-                      <TableCell align="right">{row.brand_id}</TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          overflow: "hidden",
-                          whiteSpace: "nowrap",
-                          textOverflow: "ellipsis",
-                        }}
-                      >
-                        {row.goods_image}
-                      </TableCell>
-                      <TableCell align="left">{row.goods_name}</TableCell>
-                      <TableCell align="right">{row.oroshi_price}</TableCell>
-                      <TableCell align="right">{row.is_active}</TableCell>
-                      <TableCell align="left">
-                        {formatDate(row.created_at)}
-                      </TableCell>
-                      <TableCell align="left">
-                        {formatDate(row.updated_at)}
-                      </TableCell>
+
+                      {headCells.map((headCell) => (
+                        <TableCell
+                          id={labelId}
+                          key={headCell.field}
+                          align={headCell.type === "numeric" ? "right" : "left"}
+                          sx={
+                            !!headCell.sx
+                              ? headCell.sx
+                              : { whiteSpace: "nowrap" }
+                          }
+                        >
+                          {headCell.type === "timestamp"
+                            ? formatDate(row[headCell.field])
+                            : row[headCell.field]}
+                        </TableCell>
+                      ))}
                     </TableRow>
                   );
                 })}
