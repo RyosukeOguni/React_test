@@ -82,7 +82,12 @@ const headCells = [
     field: "goods_image",
     type: "text",
     label: "画像",
-    sx: { overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" },
+    sx: {
+      maxWidth: "200px",
+      overflow: "hidden",
+      whiteSpace: "nowrap",
+      textOverflow: "ellipsis",
+    },
   },
   {
     field: "goods_name",
@@ -248,10 +253,7 @@ export default function Manual() {
       </Button>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <TableContainer>
-          <Table
-            sx={{  minWidth: 1200, tableLayout: "fixed" }}
-            aria-labelledby="tableTitle"
-          >
+          <Table sx={{ tableLayout: "auto" }} aria-labelledby="tableTitle">
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}

@@ -59,44 +59,37 @@ const endpoint = "brand";
 const headCells = [
   {
     field: "id",
-    numeric: false,
-    disablePadding: true,
+    type: "numeric",
     label: "ID",
   },
   {
     field: "abbreviation",
-    numeric: false,
-    disablePadding: false,
+    type: "text",
     label: "管理ID",
   },
   {
     field: "brand_name",
-    numeric: false,
-    disablePadding: false,
+    type: "text",
     label: "ブランド名",
   },
   {
     field: "brand_name_jp",
-    numeric: false,
-    disablePadding: false,
+    type: "text",
     label: "ブランド名（jp）",
   },
   {
     field: "is_active",
-    numeric: true,
-    disablePadding: false,
+    type: "numeric",
     label: "状態",
   },
   {
     field: "created_at",
-    numeric: false,
-    disablePadding: false,
+    type: "timestamp",
     label: "登録日",
   },
   {
     field: "updated_at",
-    numeric: false,
-    disablePadding: false,
+    type: "timestamp",
     label: "更新日",
   },
 ];
@@ -244,10 +237,7 @@ export default function Manual() {
       </Button>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <TableContainer>
-          <Table
-            sx={{ minWidth: 750, tableLayout: "fixed" }}
-            aria-labelledby="tableTitle"
-          >
+          <Table sx={{ tableLayout: "auto" }} aria-labelledby="tableTitle">
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
@@ -287,24 +277,23 @@ export default function Manual() {
                           <EditIcon color="primary" />
                         </IconButton>
                       </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.id}
-                      </TableCell>
-                      <TableCell align="right">{row.abbreviation}</TableCell>
-                      <TableCell align="left">{row.brand_name}</TableCell>
-                      <TableCell align="left">{row.brand_name_jp}</TableCell>
-                      <TableCell align="right">{row.is_active}</TableCell>
-                      <TableCell align="left">
-                        {formatDate(row.created_at)}
-                      </TableCell>
-                      <TableCell align="left">
-                        {formatDate(row.updated_at)}
-                      </TableCell>
+
+                      {headCells.map((headCell) => (
+                        <TableCell
+                          id={labelId}
+                          key={headCell.field}
+                          align={headCell.type === "numeric" ? "right" : "left"}
+                          sx={
+                            !!headCell.sx
+                              ? headCell.sx
+                              : { whiteSpace: "nowrap" }
+                          }
+                        >
+                          {headCell.type === "timestamp"
+                            ? formatDate(row[headCell.field])
+                            : row[headCell.field]}
+                        </TableCell>
+                      ))}
                     </TableRow>
                   );
                 })}
