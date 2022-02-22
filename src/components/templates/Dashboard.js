@@ -1,23 +1,23 @@
 import * as React from "react";
+import { Routes, Route } from "react-router-dom";
+import {
+  CssBaseline,
+  Grid,
+  Box,
+  List,
+  Drawer as MuiDrawer,
+  AppBar as MuiAppBar,
+  Toolbar,
+  Container,
+  Paper,
+  Divider,
+  Typography,
+  IconButton,
+} from "@mui/material";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import MuiDrawer from "@mui/material/Drawer";
-import Box from "@mui/material/Box";
-import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import { mainListItems } from "./listItems";
-import { Routes, Route } from "react-router-dom";
 import Home from "../page/home";
 import Management from "../page/management";
 import Other1 from "../page/other1";
@@ -108,11 +108,6 @@ function DashboardContent() {
             >
               SRL医療業務システム
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
