@@ -2,7 +2,6 @@ import React, { useState, useEffect, forwardRef } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
 import {
   Modal,
   Grid,
@@ -13,7 +12,13 @@ import {
   DialogActions,
 } from "@mui/material";
 import EnhancedTable from "../../components/templates/EnhancedTable";
-import { restfulApiConfig } from "../../components/modules/config";
+import {
+  indexApi,
+  showApi,
+  deleteApi,
+  postApi,
+  putApi,
+} from "../../components/modules/api";
 
 // statusを初期化
 const initial = { open: false, obj: {}, type: "" };
@@ -91,34 +96,23 @@ export default function Manual() {
 
   // 取得（Index）※DOMを読み込んでから値を適用
   useEffect(() => {
-    // メモリリークを防止
-    let mounted = true;
-    const fetchData = async () => {
-      await axios
-        .get(restfulApiConfig.apiURL + endpoint)
-        .then((response) => {
-          if (mounted) {
-            setRows(response.data);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-    fetchData();
-    return () => (mounted = false);
+    indexApi(endpoint, setRows);
   }, []);
 
   // 取得（Show）
-  const showApi = async (id) => {
-    await axios
-      .get(restfulApiConfig.apiURL + endpoint + `/${id}`)
-      .then((response) => {
-        setStatus({ open: true, obj: response.data, type: "put" });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const dataShow = (id) => {
+    showApi(id, endpoint, (data) => {
+      setStatus({ open: true, obj: data, type: "put" });
+    });
+  };
+
+  // 削除（Delete）
+  const selectDelete = () => {
+    deleteApi(selected, endpoint, () => {
+      const result = rows.filter((row) => !selected.includes(row.id));
+      setRows(result);
+      setSelected([]);
+    });
   };
 
   // 一覧表のstate変更とModalclose
@@ -132,24 +126,6 @@ export default function Manual() {
       setRows([...rows, data]);
     }
     setStatus(initial);
-  };
-
-  // 削除（Delete）
-  const selectDelete = async () => {
-    const json = selected;
-    !!json.length &&
-      (await axios
-        .post(restfulApiConfig.apiURL + endpoint + "/selectdelete", json)
-        .then((response) => {
-          console.log(response);
-          alert("ID:" + json + "を削除しました");
-          const result = rows.filter((row) => !selected.includes(row.id));
-          setRows(result);
-          setSelected([]);
-        })
-        .catch((error) => {
-          console.log(error);
-        }));
   };
 
   // モーダル内のコンポーネントにpropsする為にforwardRefする
@@ -177,12 +153,12 @@ export default function Manual() {
         新規作成
       </Button>
       <EnhancedTable
-        showApi={showApi}
-        selectDelete={selectDelete}
         headCells={headCells}
         selected={selected}
         setSelected={setSelected}
         rows={rows}
+        selectDelete={selectDelete}
+        dataShow={dataShow}
       />
       <Modal open={status.open}>
         {/* 空要素でくくる事でエラーを解消 */}
@@ -197,7 +173,7 @@ export default function Manual() {
 const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
   const { obj, type } = status;
 
-  // Hook Formの設定※
+  // Hook Formの設定
   const {
     register,
     handleSubmit,
@@ -208,33 +184,21 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
 
   // フォーム送信時の処理
   const onSubmit = (data) => {
-    type === "post" ? dataPostApi(data) : dataPutApi(data);
+    type === "post" ? dataPost(data) : dataPut(data);
   };
 
   // 登録（Post）
-  const dataPostApi = async (data) => {
-    const json = JSON.parse(JSON.stringify(data));
-    await axios
-      .post(restfulApiConfig.apiURL + endpoint, json)
-      .then((response) => {
-        handleDialogClose({ type: type, data: response.data });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const dataPost = async (data) => {
+    postApi(data, endpoint, (data) => {
+      handleDialogClose({ type: type, data: data });
+    });
   };
 
   // 更新（Put）
-  const dataPutApi = async (data) => {
-    const json = JSON.parse(JSON.stringify(data));
-    await axios
-      .put(restfulApiConfig.apiURL + endpoint + `/${obj.id}`, json)
-      .then((response) => {
-        handleDialogClose({ type: type, data: response.data });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const dataPut = async (data) => {
+    putApi(data, obj, endpoint, (data) => {
+      handleDialogClose({ type: type, data: data });
+    });
   };
 
   return (

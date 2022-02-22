@@ -16,7 +16,7 @@ import EnhancedTableHead from "./EnhancedTableHead";
 import EnhancedTableToolbar from "./EnhancedTableToolbar";
 
 export default function EnhancedTable(props) {
-  const { showApi, selectDelete, headCells, selected, setSelected, rows } =
+  const { headCells, selected, setSelected, rows, selectDelete, dataShow } =
     props;
 
   const [order, setOrder] = useState("asc");
@@ -138,7 +138,7 @@ export default function EnhancedTable(props) {
                     </TableCell>
                     <TableCell
                       onClick={(event) => {
-                        showApi(row.id);
+                        dataShow(row.id);
                       }}
                     >
                       <IconButton>
@@ -184,7 +184,7 @@ export default function EnhancedTable(props) {
 }
 
 EnhancedTable.propTypes = {
-  showApi: PropTypes.func.isRequired,
+  dataShow: PropTypes.func.isRequired,
   selectDelete: PropTypes.func.isRequired,
   setSelected: PropTypes.func.isRequired,
   headCells: PropTypes.array.isRequired,
