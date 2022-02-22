@@ -18,10 +18,10 @@ import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { mainListItems } from "./listItems";
-import Home from "../pages/home";
-import Management from "../pages/management";
-import Other1 from "../pages/other1";
-import Other2 from "../pages/other2";
+import Home from "../../pages/home";
+import Management from "../../pages/management";
+import Other1 from "../../pages/other1";
+import Other2 from "../../pages/other2";
 
 const drawerWidth = 240;
 

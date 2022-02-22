@@ -20,9 +20,9 @@ import {
   DialogActions,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import EnhancedTableHead from "../../templates/EnhancedTableHead";
-import EnhancedTableToolbar from "../../templates/EnhancedTableToolbar";
-import { restfulApiConfig } from "../../../config";
+import EnhancedTableHead from "../../components/templates/EnhancedTableHead";
+import EnhancedTableToolbar from "../../components/templates/EnhancedTableToolbar";
+import { restfulApiConfig } from "../../components/modules/config";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -63,7 +63,7 @@ const formatDate = (dateString) => {
 // statusを初期化
 const initial = { open: false, obj: {}, type: "" };
 // ApiEndpoint
-const endpoint = "manual";
+const endpoint = "goods";
 // テーブル項目
 const headCells = [
   {
@@ -72,35 +72,9 @@ const headCells = [
     label: "ID",
   },
   {
-    field: "goods_category_id",
-    type: "numeric",
-    label: "カテゴリID",
-  },
-  {
-    field: "brand_id",
-    type: "numeric",
-    label: "ブランドID",
-  },
-  {
-    field: "goods_image",
+    field: "goods_category",
     type: "text",
-    label: "画像",
-    sx: {
-      maxWidth: "200px",
-      overflow: "hidden",
-      whiteSpace: "nowrap",
-      textOverflow: "ellipsis",
-    },
-  },
-  {
-    field: "goods_name",
-    type: "text",
-    label: "商品名",
-  },
-  {
-    field: "oroshi_price",
-    type: "numeric",
-    label: "卸価格",
+    label: "カテゴリ名",
   },
   {
     field: "is_active",
@@ -120,9 +94,7 @@ const headCells = [
 ];
 // バリデーションルール
 const schema = yup.object({
-  goods_category_id: yup.string().required("入力してください"),
-  brand_id: yup.string().required("入力してください"),
-  goods_name: yup
+  goods_category: yup
     .string()
     .required("入力してください")
     .min(6, "6文字以上で入力してください"),
@@ -418,47 +390,19 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
         {type === "post" ? "新規作成" : `ID:${obj.id}`}
       </Typography>
       <Grid container spacing={1}>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="standard-basic"
-            label="カテゴリID"
-            {...register("goods_category_id")}
-            type={"number"}
-            defaultValue={
-              obj.goods_category_id === undefined ? "" : obj.goods_category_id
-            }
-            margin="normal"
-            error={"goods_category_id" in errors}
-            helperText={errors.goods_category_id?.message}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="standard-basic"
-            label="ブランドID"
-            {...register("brand_id")}
-            type={"number"}
-            defaultValue={obj.brand_id === undefined ? "" : obj.brand_id}
-            margin="normal"
-            error={"brand_id" in errors}
-            helperText={errors.brand_id?.message}
-            fullWidth
-          />
-        </Grid>
         <Grid item xs={12}>
           <TextField
             required
             id="standard-basic"
-            label="商品名"
-            {...register("goods_name")}
+            label="カテゴリ名"
+            {...register("goods_category")}
             type={"text"}
-            defaultValue={obj.goods_name === undefined ? "" : obj.goods_name}
+            defaultValue={
+              obj.goods_category === undefined ? "" : obj.goods_category
+            }
             margin="normal"
-            error={"goods_name" in errors}
-            helperText={errors.goods_name?.message}
+            error={"goods_category" in errors}
+            helperText={errors.goods_category?.message}
             fullWidth
           />
         </Grid>

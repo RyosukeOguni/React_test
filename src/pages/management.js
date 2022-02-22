@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Grid } from "@mui/material";
 import { Routes, Route, useLocation } from "react-router-dom";
-import Tablink from "../templates/Tablink";
+import Tablink from "../components/templates/Tablink";
 import Manual from "./management/manual";
 import Brand from "./management/brand";
 import Goods from "./management/goods";
