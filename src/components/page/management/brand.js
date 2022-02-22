@@ -20,8 +20,8 @@ import {
   DialogActions,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import EnhancedTableHead from "./EnhancedTableHead";
-import EnhancedTableToolbar from "./EnhancedTableToolbar";
+import EnhancedTableHead from "../../templates/EnhancedTableHead";
+import EnhancedTableToolbar from "../../templates/EnhancedTableToolbar";
 import { restfulApiConfig } from "../../../config";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
