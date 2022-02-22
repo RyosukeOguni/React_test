@@ -7,11 +7,17 @@ import Brand from "../page/management/brand";
 import Goods from "../page/management/goods";
 
 const Management = () => {
+  const [value, setValue] = React.useState("manual");
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
     <Grid item xs={12}>
-      <Tablink />
+      <Tablink value={value} handleChange={handleChange} />
       <Routes>
-        <Route index element={<Manual />} />
+        <Route path="/*" element={<Manual />} />
         <Route path="goods" element={<Goods />} />
         <Route path="brand" element={<Brand />} />
       </Routes>
