@@ -9,7 +9,8 @@ import Goods from "../page/management/goods";
 const Management = () => {
   const [value, setValue] = useState("manual");
 
-  // 親コンポーネントパスの場合、Tabにチェック状態を戻す
+  // pathが"/management"の場合、Tabのチェック状態を"manual"に戻す
+  // ※サイドバーからLinkの場合、Tab状態が戻らない箇所を修正
   const location = useLocation();
   useEffect(() => {
     if (location.pathname === "/management") {

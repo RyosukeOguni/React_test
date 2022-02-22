@@ -360,7 +360,6 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
 
   // 登録（Post）
   const dataPostApi = async (data) => {
-    // Objectをjson文字列に変換してjsonに変換
     const json = JSON.parse(JSON.stringify(data));
     await axios
       .post(restfulApiConfig.apiURL + endpoint, json)
@@ -374,7 +373,6 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
 
   // 更新（Put）
   const dataPutApi = async (data) => {
-    // Objectをjson文字列に変換してjsonに変換
     const json = JSON.parse(JSON.stringify(data));
     await axios
       .put(restfulApiConfig.apiURL + endpoint + `/${obj.id}`, json)
@@ -400,7 +398,7 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
       }}
       ref={forwardRef}
     >
-      <Typography variant="h4">
+      <Typography component="h3" variant="h6">
         {type === "post" ? "新規作成" : `ID:${obj.id}`}
       </Typography>
       <Grid container spacing={1}>
