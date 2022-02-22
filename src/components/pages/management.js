@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Grid } from "@mui/material";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Tablink from "../templates/Tablink";
-import Manual from "../page/management/manual";
-import Brand from "../page/management/brand";
-import Goods from "../page/management/goods";
+import Manual from "./management/manual";
+import Brand from "./management/brand";
+import Goods from "./management/goods";
 
 const Management = () => {
   const [value, setValue] = useState("manual");
