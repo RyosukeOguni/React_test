@@ -117,17 +117,22 @@ export default function Manual() {
 
   // 取得（Index）※DOMを読み込んでから値を適用
   useEffect(() => {
+    // メモリリークを防止
+    let mounted = true;
     const fetchData = async () => {
       await axios
         .get(restfulApiConfig.apiURL + endpoint)
         .then((response) => {
-          setRows(response.data);
+          if (mounted) {
+            setRows(response.data);
+          }
         })
         .catch((error) => {
           console.log(error);
         });
     };
     fetchData();
+    return () => (mounted = false);
   }, []);
 
   // 取得（Show）

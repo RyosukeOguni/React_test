@@ -57,7 +57,7 @@ function stableSort(array, comparator) {
 // TimeStamp型を日本の日付（年月日）に変換
 const formatDate = (dateString) => {
   const options = { year: "numeric", month: "long", day: "numeric" };
-  return new Date(dateString).toLocaleDateString(undefined, options);
+  return new Date(dateString).toLocaleDateString("ja-JP", options);
 };
 
 // statusを初期化
@@ -139,17 +139,22 @@ export default function Manual() {
 
   // 取得（Index）※DOMを読み込んでから値を適用
   useEffect(() => {
+    // メモリリークを防止
+    let mounted = true;
     const fetchData = async () => {
       await axios
         .get(restfulApiConfig.apiURL + endpoint)
         .then((response) => {
-          setRows(response.data);
+          if (mounted) {
+            setRows(response.data);
+          }
         })
         .catch((error) => {
           console.log(error);
         });
     };
     fetchData();
+    return () => (mounted = false);
   }, []);
 
   // 取得（Show）
@@ -466,13 +471,7 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
           variant="contained"
           color="primary"
         >
-          {(() => {
-            if (type === "put") {
-              return "更新";
-            } else if (type === "post") {
-              return "登録";
-            }
-          })()}
+          {type === "put" ? "更新" : "登録"}
         </Button>
         <Button
           onClick={() => {
