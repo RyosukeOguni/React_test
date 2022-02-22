@@ -54,6 +54,12 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
+// TimeStamp型を日本の日付（年月日）に変換
+const formatDate = (dateString) => {
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  return new Date(dateString).toLocaleDateString("ja-JP", options);
+};
+
 // statusを初期化
 const initial = { open: false, obj: {}, type: "" };
 // ApiEndpoint
@@ -209,12 +215,6 @@ export default function Manual() {
   };
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
-
-  // TimeStamp型を日本の日付（年月日）に変換
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
 
   // モーダル内のコンポーネントにpropsする為にforwardRefする
   const RefModal = forwardRef(({ status, handleDialogClose }, ref) => {
@@ -413,13 +413,7 @@ const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
           variant="contained"
           color="primary"
         >
-          {(() => {
-            if (type === "put") {
-              return "更新";
-            } else if (type === "post") {
-              return "登録";
-            }
-          })()}
+          {type === "put" ? "更新" : "登録"}
         </Button>
         <Button
           onClick={() => {
