@@ -3,12 +3,6 @@ import { Link } from "react-router-dom";
 import { Tabs, Tab, Box } from "@mui/material";
 
 function Tablink({ value, handleChange }) {
-  /*   const [value, setValue] = React.useState("manual");
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  }; */
-
   return (
     <Box>
       <Tabs

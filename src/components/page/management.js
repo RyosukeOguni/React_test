@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Grid } from "@mui/material";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Tablink from "../templates/Tablink";
 import Manual from "../page/management/manual";
 import Brand from "../page/management/brand";
 import Goods from "../page/management/goods";
 
 const Management = () => {
-  const [value, setValue] = React.useState("manual");
+  const [value, setValue] = useState("manual");
 
+  // 親コンポーネントパスの場合、Tabにチェック状態を戻す
+  const location = useLocation();
+  useEffect(() => {
+    if (location.pathname === "/management") {
+      setValue("manual");
+    }
+  }, [location]);
+  
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };

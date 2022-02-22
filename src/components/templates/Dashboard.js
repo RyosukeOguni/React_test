@@ -150,7 +150,7 @@ function DashboardContent() {
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                   <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route exact path="management/*" element={<Management />} />
+                    <Route path="management/*" element={<Management />} />
                     <Route path="other1" element={<Other1 />} />
                     <Route path="other2" element={<Other2 />} />
                   </Routes>
