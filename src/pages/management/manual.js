@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef } from "react";
+import React, { useState, useEffect } from "react";
 import * as yup from "yup";
 import { Modal, Grid, Box, TextField, Button } from "@mui/material";
 import EnhancedTable from "../../components/templates/EnhancedTable";
@@ -171,23 +171,6 @@ export default function Manual() {
     setStatus(initial);
   };
 
-  // モーダル内のコンポーネントにpropsする為にforwardRefする
-  const RefModal = forwardRef(({ status, handleDialogClose }, ref) => {
-    // RefModal という HOC を作成して ManualModal の forwardRef に ref を渡している
-    return (
-      <ManagementModal
-        status={status}
-        handleDialogClose={handleDialogClose}
-        forwardRef={ref}
-        endpoint={endpoint}
-        schema={schema}
-      >
-        {/* Modalコンポーネントにchildrenで要素を渡す*/}
-        {inputArea}
-      </ManagementModal>
-    );
-  });
-
   return (
     <Box sx={{ width: "100%", position: "relative" }}>
       <Button
@@ -209,9 +192,18 @@ export default function Manual() {
         dataShow={dataShow}
       />
       <Modal open={status.open}>
-        {/* 空要素でくくる事でエラーを解消 */}
+        {/* Mui:Modal直下に自作コンポーネントを入れるとerrorが発生する */}
+        {/* 空要素で括る事でerrorを解消 */}
         <>
-          <RefModal status={status} handleDialogClose={handleDialogClose} />
+          <ManagementModal
+            status={status}
+            handleDialogClose={handleDialogClose}
+            endpoint={endpoint}
+            schema={schema}
+          >
+            {/* Modalコンポーネントにchildrenで要素を渡す*/}
+            {inputArea}
+          </ManagementModal>
         </>
       </Modal>
     </Box>

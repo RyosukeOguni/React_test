@@ -7,7 +7,6 @@ import { postApi, putApi } from "../../components/modules/api";
 const ManagementModal = ({
   status,
   handleDialogClose,
-  forwardRef,
   endpoint,
   schema,
   children,
@@ -54,7 +53,6 @@ const ManagementModal = ({
         boxShadow: 24,
         p: 2,
       }}
-      ref={forwardRef}
     >
       <Typography component="h3" variant="h6">
         {type === "post" ? "新規作成" : `ID:${obj.id}`}
