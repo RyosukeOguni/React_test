@@ -132,7 +132,14 @@ export default function Manual() {
 
   // 取得（Index）※DOMを読み込んでから値を適用
   useEffect(() => {
-    indexApi(endpoint, setRows);
+    // メモリリークを防止
+    let mounted = true;
+    indexApi(endpoint, (response) => {
+      if (mounted) {
+        setRows(response.data);
+      }
+    });
+    return () => (mounted = false);
   }, []);
 
   // 取得（Show）

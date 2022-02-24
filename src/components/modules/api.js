@@ -2,23 +2,18 @@ import { restfulApiConfig } from "./config";
 import axios from "axios";
 
 // 取得（Index）※DOMを読み込んでから値を適用
-export const indexApi = (endpoint, setRows) => {
-  // メモリリークを防止
-  let mounted = true;
+export const indexApi = (endpoint, callback) => {
   const fetchData = async () => {
     await axios
       .get(restfulApiConfig.apiURL + endpoint)
       .then((response) => {
-        if (mounted) {
-          setRows(response.data);
-        }
+        callback(response);
       })
       .catch((error) => {
         console.log(error);
       });
   };
   fetchData();
-  return () => (mounted = false);
 };
 
 // 取得（Show）
