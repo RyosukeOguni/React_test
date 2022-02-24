@@ -1,70 +1,162 @@
-# Getting Started with Create React App
+# 管理システム
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## １．React開発環境
+-   create-react-app
 
-## Available Scripts
+## ２．使用ライブラリ
+-   MUI関連
+    -   @mui/material@5.4.1
+    -   @emotion/react@11.7.1
+    -   @emotion/styled@11.6.0
+    -   @mui/icons-material@5.4.1
+-   SPAルーティング
+    -   react-router-dom@6.2.1
+-   非同期通信
+    -   axios@0.25.0
+-   環境変数ファイル
+    -   cross-env@7.0.3
+-   Form用State(バリデーション付)
+    -   react-hook-form@7.27.0
+-   バリデーションライブラリ
+    -   yup@0.32.11
+-   react-hook-formでyupを有効化
+    -   @hookform/resolvers@2.8.8
 
-In the project directory, you can run:
+## ３．使用テンプレート
+-   dachboardを部分的に使用<br>
+https://github.com/mui/material-ui/tree/master/docs/data/material/getting-started/templates/dashboard
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## ４．技術メモ
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<details>
+<summary><u>ステートフック（useState）</u></summary>
 
-### `npm test`
+Vue.jsのdataにあたるもの
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+import React, { useState } from "react";
+const [selected, setSelected] = useState([]);
+setSlelcted(array);
+```
+---
+</details>
+<br>
+<details>
+<summary><u>副作用フック（useEffect）</u></summary>
 
-### `npm run build`
+Api通信などでDOM描画より遅れてdataを取得する場合、DOM描画後に要素に値を入れる
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+import React, { useEffect } from "react";
+useEffect(() => {
+  // メモリリークを防止
+  let mounted = true;
+  const fetchData = async () => {
+    await axios
+      .get(restfulApiConfig.apiURL + endpoint)
+      .then((response) => {
+       if (mounted) {
+        setRows(response.data);
+       }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  fetchData();
+  return () => (mounted = false);
+}, []);
+```
+-   Stateに値が渡される前にコンポーネントが削除された場合、メモリリークエラーが発生するので、通信中はStateに値を渡さない様にする
+-   第2引数 []を空にすると、コンポーネント開始時に1回起動
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
+<br>
+同一コンポーネントが呼ばれて再描画されない状態の時、Tagの状態を初期化したい場合
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+import React, { useEffect } from "react";
+const [value, setValue] = useState("manual");
+const location = useLocation();
+useEffect(() => {
+  if (location.pathname === "/management") {
+    setValue("manual");
+  }
+}, [location]);
+```
+-   managementでタグ状態を管理しているが、managementが再度Linkされた時に、タグ状態が初期値(manual)に戻らない現象を解消
+-   第2引数 [location]が変更された場合、起動
+---
+</details>
+<br>
+<details>
+<summary><u>Routerの階層化</u></summary>
 
-### `npm run eject`
+Routerを階層（ネスト）して、下位リンクを作成する
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
+//　親コンポーネント(Dashboard)
+<Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="management/*" element={<Management />} />
+  <Route path="other1" element={<Other1 />} />
+  <Route path="other2" element={<Other2 />} />
+</Routes>
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+//　子コンポーネント(Management)
+<Routes>
+  <Route path="/*" element={<Manual />} />
+  <Route path="goods" element={<Goods />} />
+  <Route path="brand" element={<Brand />} />
+</Routes>
+//　※親で"management/*"が押下された時、path="/*"にリンクする
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+//　ナビタブ(Tablink)
+<Tab value="manual" label="マニュアル管理" to="manual" component={Link} />
+<Tab value="goods" label="商品管理" to="goods" component={Link} />
+<Tab value="brand" label="ブランド名管理" to="brand" component={Link} />
+//　※to="manual"の場合、path="/*"(その他)にリンクする
+```
+---
+</details>
+<br>
+<details>
+<summary><u>Table（選択、並び替え、ページネーション）</u></summary>
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Sorting & selectingを加工<br>
+https://mui.com/components/tables/
 
-## Learn More
+---
+</details>
+<br>
+<details>
+<summary><u>コンポーネント子要素の出力</u></summary>
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+子コンポーネントに親からコンポーネントを渡す（Vue.jsのslotにあたるもの）
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+//　親コンポーネント
+<FncModal>
+ <h1 className="Dialog-title" color="blue">Welcome</h1>
+ <p className="Dialog-message">
+  Thank you for visiting our spacecraft!
+ </p>
+</FncModal>
 
-### Code Splitting
+//　子コンポーネント
+const FncModal = (props) => {
+ return (
+  <div className={props.color}> // 通常のprops渡し
+   {props.children}　// childrenを使った要素渡し
+  </div>
+ );
+}
+```
+---
+</details>
+<br>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## ５．作成者情報
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+-   作成者：小国亮介
