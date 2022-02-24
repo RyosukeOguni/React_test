@@ -1,7 +1,7 @@
 import React from "react";
 import * as yup from "yup";
 import { Grid, TextField } from "@mui/material";
-import Management from "../../components/modules/Management";
+import ManagementBase from "../../components/templates/ManagementBase";
 
 // ApiEndpoint
 const endpoint = "brand";
@@ -104,6 +104,6 @@ const schema = yup.object({
     .min(6, "6文字以上で入力してください"),
 });
 
-const Brand = () => Management(endpoint, headCells, schema, inputArea);
+const Brand = () => ManagementBase(endpoint, headCells, schema, inputArea);
 
 export default Brand;

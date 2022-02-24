@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Box, Button } from "@mui/material";
-import EnhancedTable from "../../components/templates/EnhancedTable";
-import ManagementModal from "../../components/templates/ManagementModal";
-import { indexApi, showApi, deleteApi } from "../../components/modules/api";
+import EnhancedTable from "./EnhancedTable";
+import ManagementModal from "./ManagementModal";
+import { indexApi, showApi, deleteApi } from "../modules/api";
 
 export default function Management(endpoint, headCells, schema, inputArea) {
 
