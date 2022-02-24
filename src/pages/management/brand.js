@@ -165,8 +165,10 @@ export default function Brand() {
         forwardRef={ref}
         endpoint={endpoint}
         schema={schema}
-        inputArea={inputArea}
-      />
+      >
+        {/* Modalコンポーネントにchildrenで要素を渡す*/}
+        {inputArea}
+      </ManagementModal>
     );
   });
 

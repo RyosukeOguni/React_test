@@ -1,10 +1,5 @@
 import * as React from "react";
-import {
-  Box,
-  Button,
-  Typography,
-  DialogActions,
-} from "@mui/material";
+import { Box, Button, Typography, DialogActions } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { postApi, putApi } from "../../components/modules/api";
@@ -15,7 +10,7 @@ const ManagementModal = ({
   forwardRef,
   endpoint,
   schema,
-  inputArea
+  children,
 }) => {
   const { obj, type } = status;
 
@@ -64,7 +59,8 @@ const ManagementModal = ({
       <Typography component="h3" variant="h6">
         {type === "post" ? "新規作成" : `ID:${obj.id}`}
       </Typography>
-      {inputArea(register,obj,errors)}
+      {/* childrenで入れ子要素を取得 */}
+      {children(register, obj, errors)}
       <DialogActions>
         <Button
           onClick={handleSubmit(onSubmit)}

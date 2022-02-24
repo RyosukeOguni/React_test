@@ -181,8 +181,10 @@ export default function Manual() {
         forwardRef={ref}
         endpoint={endpoint}
         schema={schema}
-        inputArea={inputArea}
-      />
+      >
+        {/* Modalコンポーネントにchildrenで要素を渡す*/}
+        {inputArea}
+      </ManagementModal>
     );
   });
 
