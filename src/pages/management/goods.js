@@ -1,27 +1,10 @@
 import React, { useState, useEffect, forwardRef } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {
-  Modal,
-  Grid,
-  Box,
-  Typography,
-  TextField,
-  Button,
-  DialogActions,
-} from "@mui/material";
+import { Modal, Grid, Box, TextField, Button } from "@mui/material";
 import EnhancedTable from "../../components/templates/EnhancedTable";
-import {
-  indexApi,
-  showApi,
-  deleteApi,
-  postApi,
-  putApi,
-} from "../../components/modules/api";
+import ManagementModal from "../../components/templates/ManagementModal";
+import { indexApi, showApi, deleteApi } from "../../components/modules/api";
 
-// statusを初期化
-const initial = { open: false, obj: {}, type: "" };
 // ApiEndpoint
 const endpoint = "goods";
 // テーブル項目
@@ -52,6 +35,29 @@ const headCells = [
     label: "更新日",
   },
 ];
+// Modal編集項目
+const inputArea = (register, obj, errors) => {
+  return (
+    <Grid container spacing={1}>
+      <Grid item xs={12}>
+        <TextField
+          required
+          id="standard-basic"
+          label="カテゴリ名"
+          {...register("goods_category")}
+          type={"text"}
+          defaultValue={
+            obj.goods_category === undefined ? "" : obj.goods_category
+          }
+          margin="normal"
+          error={"goods_category" in errors}
+          helperText={errors.goods_category?.message}
+          fullWidth
+        />
+      </Grid>
+    </Grid>
+  );
+};
 // バリデーションルール
 const schema = yup.object({
   goods_category: yup
@@ -60,7 +66,10 @@ const schema = yup.object({
     .min(6, "6文字以上で入力してください"),
 });
 
-export default function Manual() {
+// statusを初期化
+const initial = { open: false, obj: {}, type: "" };
+
+export default function Goods() {
   const [selected, setSelected] = useState([]);
   const [rows, setRows] = useState([]);
   const [status, setStatus] = useState(initial);
@@ -103,10 +112,13 @@ export default function Manual() {
   const RefModal = forwardRef(({ status, handleDialogClose }, ref) => {
     // RefModal という HOC を作成して ManualModal の forwardRef に ref を渡している
     return (
-      <ManualModal
+      <ManagementModal
         status={status}
         handleDialogClose={handleDialogClose}
         forwardRef={ref}
+        endpoint={endpoint}
+        schema={schema}
+        inputArea={inputArea}
       />
     );
   });
@@ -140,90 +152,3 @@ export default function Manual() {
     </Box>
   );
 }
-
-const ManualModal = ({ status, handleDialogClose, forwardRef }) => {
-  const { obj, type } = status;
-
-  // Hook Formの設定※
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-
-  // フォーム送信時の処理
-  const onSubmit = (data) => {
-    type === "post" ? dataPost(data) : dataPut(data);
-  };
-
-  // 登録（Post）
-  const dataPost = async (data) => {
-    postApi(data, endpoint, (data) => {
-      handleDialogClose({ type: type, data: data });
-    });
-  };
-
-  // 更新（Put）
-  const dataPut = async (data) => {
-    putApi(data, obj, endpoint, (data) => {
-      handleDialogClose({ type: type, data: data });
-    });
-  };
-
-  return (
-    <Box
-      sx={{
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        width: 500,
-        bgcolor: "background.paper",
-        boxShadow: 24,
-        p: 2,
-      }}
-      ref={forwardRef}
-    >
-      <Typography component="h3" variant="h6">
-        {type === "post" ? "新規作成" : `ID:${obj.id}`}
-      </Typography>
-      <Grid container spacing={1}>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="standard-basic"
-            label="カテゴリ名"
-            {...register("goods_category")}
-            type={"text"}
-            defaultValue={
-              obj.goods_category === undefined ? "" : obj.goods_category
-            }
-            margin="normal"
-            error={"goods_category" in errors}
-            helperText={errors.goods_category?.message}
-            fullWidth
-          />
-        </Grid>
-      </Grid>
-      <DialogActions>
-        <Button
-          onClick={handleSubmit(onSubmit)}
-          variant="contained"
-          color="primary"
-        >
-          {type === "put" ? "更新" : "登録"}
-        </Button>
-        <Button
-          onClick={() => {
-            handleDialogClose({ type: "" });
-          }}
-          color="primary"
-        >
-          キャンセル
-        </Button>
-      </DialogActions>
-    </Box>
-  );
-};
