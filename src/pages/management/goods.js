@@ -43,7 +43,6 @@ const schema = yup.object({
     .min(6, "6文字以上で入力してください")
     .max(255, "255文字以下で入力してください"),
 });
-
+/* 管理画面の共通テンプレート読込 */
 const Goods = () => ManagementBase(endpoint, headCells, schema);
-
 export default Goods;

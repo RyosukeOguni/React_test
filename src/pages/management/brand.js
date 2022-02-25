@@ -68,7 +68,6 @@ const schema = yup.object({
     .required("入力してください")
     .max(255, "255文字以下で入力してください"),
 });
-
+/* 管理画面の共通テンプレート読込 */
 const Brand = () => ManagementBase(endpoint, headCells, schema);
-
 export default Brand;

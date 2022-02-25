@@ -1,9 +1,26 @@
 import * as yup from "yup";
 import ManagementBase from "../../components/templates/ManagementBase";
 
-// ApiEndpoint
+/* ApiEndpoint */
 const endpoint = "manual";
-// テーブル項目
+
+/*
+テーブル項目
+必須項目: {
+  field: [フィールド名],
+  type: [number,text,timestamp],
+  label: [表示名],
+},
+オプション: {
+  edit: {　※Form項目を生成
+    smSize: [1～12]　※smサイズ時のGrid幅,
+    required: [boolean]　※Formの必須項目,
+  },
+  sx: {　※cssを適用（defaultは{whiteSpace: "nowrap"}）
+    [css]　※sx　props形式で入力
+  },
+}
+*/
 const headCells = [
   {
     field: "id",
@@ -69,7 +86,8 @@ const headCells = [
     label: "更新日",
   },
 ];
-// バリデーションルール
+
+/*　バリデーションルール　参照：https://github.com/jquense/yup　*/
 const schema = yup.object({
   goods_category_id: yup
     .number()
@@ -86,6 +104,6 @@ const schema = yup.object({
     .max(255, "255文字以下で入力してください"),
 });
 
+/* 管理画面の共通テンプレート読込 */
 const Manual = () => ManagementBase(endpoint, headCells, schema);
-
 export default Manual;
