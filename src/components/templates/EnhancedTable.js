@@ -150,7 +150,7 @@ export default function EnhancedTable(props) {
                       <TableCell
                         id={labelId}
                         key={headCell.field}
-                        align={headCell.type === "numeric" ? "right" : "left"}
+                        align={headCell.type === "number" ? "right" : "left"}
                         sx={
                           !!headCell.sx ? headCell.sx : { whiteSpace: "nowrap" }
                         }

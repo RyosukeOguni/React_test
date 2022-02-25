@@ -1,6 +1,4 @@
-import React from "react";
 import * as yup from "yup";
-import { Grid, TextField } from "@mui/material";
 import ManagementBase from "../../components/templates/ManagementBase";
 
 // ApiEndpoint
@@ -16,6 +14,10 @@ const headCells = [
     field: "goods_category",
     type: "text",
     label: "カテゴリ名",
+    edit: {
+      smSize: 12,
+      required: true,
+    },
   },
   {
     field: "is_active",
@@ -33,37 +35,15 @@ const headCells = [
     label: "更新日",
   },
 ];
-// Modal編集項目
-const inputArea = (register, obj, errors) => {
-  return (
-    <Grid container spacing={1}>
-      <Grid item xs={12}>
-        <TextField
-          required
-          id="standard-basic"
-          label="カテゴリ名"
-          {...register("goods_category")}
-          type={"text"}
-          defaultValue={
-            obj.goods_category === undefined ? "" : obj.goods_category
-          }
-          margin="normal"
-          error={"goods_category" in errors}
-          helperText={errors.goods_category?.message}
-          fullWidth
-        />
-      </Grid>
-    </Grid>
-  );
-};
 // バリデーションルール
 const schema = yup.object({
   goods_category: yup
     .string()
     .required("入力してください")
-    .min(6, "6文字以上で入力してください"),
+    .min(6, "6文字以上で入力してください")
+    .max(255, "255文字以下で入力してください"),
 });
 
-const Goods = () => ManagementBase(endpoint, headCells, schema, inputArea);
+const Goods = () => ManagementBase(endpoint, headCells, schema);
 
 export default Goods;

@@ -4,8 +4,7 @@ import EnhancedTable from "./EnhancedTable";
 import ManagementModal from "./ManagementModal";
 import { indexApi, showApi, deleteApi } from "../modules/api";
 
-export default function Management(endpoint, headCells, schema, inputArea) {
-
+export default function Management(endpoint, headCells, schema) {
   // status初期化
   const initial = { open: false, obj: {}, type: "" };
   const [selected, setSelected] = useState([]);
@@ -82,10 +81,8 @@ export default function Management(endpoint, headCells, schema, inputArea) {
             handleDialogClose={handleDialogClose}
             endpoint={endpoint}
             schema={schema}
-          >
-            {/* Modalコンポーネントにchildrenで要素を渡す*/}
-            {inputArea}
-          </ManagementModal>
+            headCells={headCells}
+          />
         </>
       </Modal>
     </Box>

@@ -1,6 +1,4 @@
-import React from "react";
 import * as yup from "yup";
-import { Grid, TextField } from "@mui/material";
 import ManagementBase from "../../components/templates/ManagementBase";
 
 // ApiEndpoint
@@ -16,16 +14,28 @@ const headCells = [
     field: "abbreviation",
     type: "text",
     label: "管理ID",
+    edit: {
+      smSize: 12,
+      required: true,
+    },
   },
   {
     field: "brand_name",
     type: "text",
     label: "ブランド名",
+    edit: {
+      smSize: 12,
+      required: true,
+    },
   },
   {
     field: "brand_name_jp",
     type: "text",
     label: "ブランド名（jp）",
+    edit: {
+      smSize: 12,
+      required: true,
+    },
   },
   {
     field: "is_active",
@@ -43,67 +53,22 @@ const headCells = [
     label: "更新日",
   },
 ];
-// Modal編集項目
-const inputArea = (register, obj, errors) => {
-  return (
-    <Grid container spacing={1}>
-      <Grid item xs={12} sm={6}>
-        <TextField
-          required
-          id="standard-basic"
-          label="管理ID"
-          {...register("abbreviation")}
-          type={"text"}
-          defaultValue={obj.abbreviation === undefined ? "" : obj.abbreviation}
-          margin="normal"
-          error={"abbreviation" in errors}
-          helperText={errors.abbreviation?.message}
-          fullWidth
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <TextField
-          required
-          id="standard-basic"
-          label="ブランドID"
-          {...register("brand_name")}
-          type={"text"}
-          defaultValue={obj.brand_name === undefined ? "" : obj.brand_name}
-          margin="normal"
-          error={"brand_name" in errors}
-          helperText={errors.brand_name?.message}
-          fullWidth
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          required
-          id="standard-basic"
-          label="ブランド名（jp）"
-          {...register("brand_name_jp")}
-          type={"text"}
-          defaultValue={
-            obj.brand_name_jp === undefined ? "" : obj.brand_name_jp
-          }
-          margin="normal"
-          error={"brand_name_jp" in errors}
-          helperText={errors.brand_name_jp?.message}
-          fullWidth
-        />
-      </Grid>
-    </Grid>
-  );
-};
 // バリデーションルール
 const schema = yup.object({
-  abbreviation: yup.string().required("入力してください"),
-  brand_name: yup.string().required("入力してください"),
+  abbreviation: yup
+    .string()
+    .required("入力してください")
+    .max(10, "10文字以下で入力してください"),
+  brand_name: yup
+    .string()
+    .required("入力してください")
+    .max(255, "255文字以下で入力してください"),
   brand_name_jp: yup
     .string()
     .required("入力してください")
-    .min(6, "6文字以上で入力してください"),
+    .max(255, "255文字以下で入力してください"),
 });
 
-const Brand = () => ManagementBase(endpoint, headCells, schema, inputArea);
+const Brand = () => ManagementBase(endpoint, headCells, schema);
 
 export default Brand;
