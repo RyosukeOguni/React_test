@@ -7,7 +7,7 @@ const endpoint = "brand";
 const headCells = [
   {
     field: "id",
-    type: "numeric",
+    type: "number",
     label: "ID",
   },
   {
@@ -39,7 +39,7 @@ const headCells = [
   },
   {
     field: "is_active",
-    type: "numeric",
+    type: "number",
     label: "状態",
   },
   {

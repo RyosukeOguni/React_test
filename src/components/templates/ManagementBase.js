@@ -55,7 +55,7 @@ export default function Management(endpoint, headCells, schema) {
   return (
     <Box sx={{ width: "100%", position: "relative" }}>
       <Button
-        sx={{ position: "absolute", right: 10, top: -30 }}
+        sx={{ position: "absolute", right: 10, top: -50 }}
         onClick={() => {
           setStatus({ open: true, obj: {}, type: "post" });
         }}

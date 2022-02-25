@@ -69,6 +69,10 @@ const headCells = [
     field: "oroshi_price",
     type: "number",
     label: "卸価格",
+    edit: {
+      smSize: 12,
+      required: true,
+    },
   },
   {
     field: "is_active",
@@ -102,6 +106,10 @@ const schema = yup.object({
     .required("入力してください")
     .min(6, "6文字以上で入力してください")
     .max(255, "255文字以下で入力してください"),
+  oroshi_price: yup
+    .number()
+    .typeError("数値で入力してください")
+    .required("入力してください"),
 });
 
 /* 管理画面の共通テンプレート読込 */

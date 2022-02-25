@@ -41,7 +41,7 @@ export default function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.field}
-            align={headCell.type === "numeric" ? "right" : "left"}
+            align={headCell.type === "number" ? "right" : "left"}
             sortDirection={orderBy === headCell.field ? order : false}
             sx={{ whiteSpace: "nowrap" }}
           >
