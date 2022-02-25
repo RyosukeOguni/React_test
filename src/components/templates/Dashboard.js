@@ -21,7 +21,8 @@ import { mainListItems } from "./listItems";
 import Home from "../../pages/home";
 import Management from "../../pages/management";
 import Other1 from "../../pages/other1";
-import Other2 from "../../pages/other2";
+// import Other2 from "../../pages/other2";
+import Auth from "../../pages/Auth";
 
 const drawerWidth = 240;
 
@@ -147,7 +148,7 @@ function DashboardContent() {
                     <Route path="/" element={<Home />} />
                     <Route path="management/*" element={<Management />} />
                     <Route path="other1" element={<Other1 />} />
-                    <Route path="other2" element={<Other2 />} />
+                    <Route path="auth" element={<Auth />} />
                   </Routes>
                 </Paper>
               </Grid>

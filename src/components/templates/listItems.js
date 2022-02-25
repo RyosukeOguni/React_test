@@ -28,11 +28,11 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="その他１" />
     </ListItemButton>
-    <ListItemButton to="/other2" component={Link}>
+    <ListItemButton to="/auth" component={Link}>
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
-      <ListItemText primary="その他２" />
+      <ListItemText primary="認証" />
     </ListItemButton>
   </React.Fragment>
 );
