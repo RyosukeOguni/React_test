@@ -17,14 +17,13 @@ const Auth = () => {
   // 認証ユーザを取得
   const getUser = () => {
     axios
-      .get(restfulApiConfig.apiURL + "admin")
+      .get(restfulApiConfig.apiURL + "api/admin")
       .then((res) => {
-        console.log("[getUser]ログイン済み");
         console.log(res.data);
         setUser(res.data);
       })
       .catch((err) => {
-        console.log("[getUser]ログインしてません");
+        console.log(err.message);
       });
   };
 
@@ -32,21 +31,15 @@ const Auth = () => {
   const login = async (e) => {
     e.preventDefault();
     // ログイン時にCSRFトークンを初期化
-    axios.get("http://localhost:8000/sanctum/csrf-cookie").then((response) => {
+    axios.get(restfulApiConfig.apiURL + "sanctum/csrf-cookie").then((response) => {
       axios
-        .post(restfulApiConfig.apiURL + "auth/login", {
+        .post(restfulApiConfig.apiURL + "api/auth/login", {
           email: email,
           password: password,
         })
         .then((res) => {
-          console.log(res.data);
-          if (res.data) {
-            console.log("[login]ログイン成功");
-            setUser(res.data.user);
-          } else {
-            console.log(res.data.message);
-            console.log("[login]ログイン失敗");
-          }
+          console.log(res.data.message);
+          setUser(res.data.user);
         })
         .catch((err) => {
           console.log(err.response);
@@ -58,7 +51,7 @@ const Auth = () => {
   // ログアウト
   const logout = () => {
     axios
-      .post(restfulApiConfig.apiURL + "auth/logout")
+      .post(restfulApiConfig.apiURL + "api/auth/logout")
       .then((res) => {
         setUser(null);
       })
