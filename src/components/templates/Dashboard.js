@@ -17,7 +17,7 @@ import {
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { mainListItems } from "./ListItems";
+import ListItems from "./ListItems";
 import Home from "../../pages/Home";
 import Management from "../../pages/Management";
 import Other1 from "../../pages/Other1";
@@ -124,7 +124,9 @@ function DashboardContent() {
             </IconButton>
           </Toolbar>
           <Divider />
-          <List component="nav">{mainListItems}</List>
+          <List component="nav">
+            <ListItems />
+          </List>
         </Drawer>
         <Box
           component="main"

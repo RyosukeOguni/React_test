@@ -11,8 +11,8 @@ const Auth = () => {
   const [password, setPassword] = useState("");
 
   // storeの読込
-  const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch(); //action
+  const auth = useSelector((state) => state.auth); //state
 
   // ログイン
   const login = async (e) => {
