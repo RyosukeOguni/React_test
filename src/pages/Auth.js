@@ -12,7 +12,7 @@ const Auth = () => {
 
   // storeの読込
   const dispatch = useDispatch();
-  const admin = useSelector((state) => state.admin);
+  const auth = useSelector((state) => state.auth);
 
   // ログイン
   const login = async (e) => {
@@ -46,7 +46,7 @@ const Auth = () => {
       .post(restfulApiConfig.apiURL + "api/auth/logout")
       .then((res) => {
         dispatch({
-          type: "GET_LOGIN_DATA",
+          type: "GET_LOGOUT_DATA",
           payload: { isAuth: false },
         });
       })
@@ -78,13 +78,13 @@ const Auth = () => {
   let userInfo = null;
 
   // 認証済みの場合、ログアウトボタンとユーザ情報を表示
-  if (admin.isAuth) {
+  if (auth.isAuth) {
     form = <button onClick={logout}>Logout</button>;
     userInfo = (
       <div>
         <h2>User</h2>
-        <div>name: {admin.name}</div>
-        <div>email: {admin.email}</div>
+        <div>name: {auth.name}</div>
+        <div>email: {auth.email}</div>
       </div>
     );
   }
