@@ -1,51 +1,62 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { restfulApiConfig } from "../components/modules/config";
+import { useSelector, useDispatch } from "react-redux";
 axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 axios.defaults.withCredentials = true;
 
 const Auth = () => {
-  const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // ブラウザリロード時にログイン済みか判定
-  useEffect(() => {
-    getUser();
-  }, []);
+  const dispatch = useDispatch();
+  const admin = useSelector((state) => state.admin);
 
   // 認証ユーザを取得
-  const getUser = () => {
+  const getUser = async () => {
     axios
       .get(restfulApiConfig.apiURL + "api/admin")
       .then((res) => {
         console.log(res.data);
-        setUser(res.data);
+        dispatch({
+          type: "GET_LOGIN_DATA",
+          payload: { ...res.data, isAuth: true },
+        });
       })
       .catch((err) => {
         console.log(err.message);
       });
   };
 
+  // ブラウザリロード時にログイン済みか判定
+  useEffect(() => {
+    getUser();
+  }, []);
+
   // ログイン
   const login = async (e) => {
     e.preventDefault();
     // ログイン時にCSRFトークンを初期化
-    axios.get(restfulApiConfig.apiURL + "sanctum/csrf-cookie").then((response) => {
-      axios
-        .post(restfulApiConfig.apiURL + "api/auth/login", {
-          email: email,
-          password: password,
-        })
-        .then((res) => {
-          console.log(res.data.message);
-          setUser(res.data.user);
-        })
-        .catch((err) => {
-          console.log(err.response);
-          console.log("[login]ログイン失敗");
-        });
-    });
+    axios
+      .get(restfulApiConfig.apiURL + "sanctum/csrf-cookie")
+      .then((response) => {
+        axios
+          .post(restfulApiConfig.apiURL + "api/auth/login", {
+            email: email,
+            password: password,
+          })
+          .then((res) => {
+            console.log(res.data.message);
+            dispatch({
+              type: "GET_LOGIN_DATA",
+              payload: { ...res.data.user, isAuth: true },
+            });
+          })
+          .catch((err) => {
+            console.log(err.response);
+            console.log("[login]ログイン失敗");
+          });
+      });
   };
 
   // ログアウト
@@ -53,7 +64,10 @@ const Auth = () => {
     axios
       .post(restfulApiConfig.apiURL + "api/auth/logout")
       .then((res) => {
-        setUser(null);
+        dispatch({
+          type: "GET_LOGIN_DATA",
+          payload: { isAuth: false },
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -83,13 +97,13 @@ const Auth = () => {
   let userInfo = null;
 
   // 認証済みの場合、ログアウトボタンとユーザ情報を表示
-  if (user) {
+  if (admin.isAuth) {
     form = <button onClick={logout}>Logout</button>;
     userInfo = (
       <div>
         <h2>User</h2>
-        <div>name: {user.name}</div>
-        <div>email: {user.email}</div>
+        <div>name: {admin.name}</div>
+        <div>email: {admin.email}</div>
       </div>
     );
   }

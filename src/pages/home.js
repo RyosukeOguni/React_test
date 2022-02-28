@@ -4,7 +4,9 @@ import { Grid } from "@mui/material";
 const Home = () => {
   return (
     <Grid item xs={12}>
-      <p>HOME</p>
+      <div className="Home">
+        <h1>Redux Learn</h1>
+      </div>
     </Grid>
   );
 };

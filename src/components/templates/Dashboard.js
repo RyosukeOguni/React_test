@@ -22,7 +22,7 @@ import Home from "../../pages/home";
 import Management from "../../pages/management";
 import Other1 from "../../pages/other1";
 // import Other2 from "../../pages/other2";
-import Auth from "../../pages/Auth";
+import Auth from "../../pages/auth";
 
 const drawerWidth = 240;
 
