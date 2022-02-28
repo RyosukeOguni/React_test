@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { restfulApiConfig } from "../components/modules/config";
 import { useSelector, useDispatch } from "react-redux";
+// セッション認証に必要な"X-Requested-With"をヘッダーに追加
 axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 axios.defaults.withCredentials = true;
 
@@ -9,29 +10,9 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // storeの読込
   const dispatch = useDispatch();
   const admin = useSelector((state) => state.admin);
-
-  // 認証ユーザを取得
-  const getUser = async () => {
-    axios
-      .get(restfulApiConfig.apiURL + "api/admin")
-      .then((res) => {
-        console.log(res.data);
-        dispatch({
-          type: "GET_LOGIN_DATA",
-          payload: { ...res.data, isAuth: true },
-        });
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  };
-
-  // ブラウザリロード時にログイン済みか判定
-  useEffect(() => {
-    getUser();
-  }, []);
 
   // ログイン
   const login = async (e) => {
@@ -112,7 +93,6 @@ const Auth = () => {
     <div>
       {form}
       {userInfo}
-      <button onClick={getUser}>getUser</button>
     </div>
   );
 };

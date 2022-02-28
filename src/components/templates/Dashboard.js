@@ -17,12 +17,11 @@ import {
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { mainListItems } from "./listItems";
-import Home from "../../pages/home";
-import Management from "../../pages/management";
-import Other1 from "../../pages/other1";
-// import Other2 from "../../pages/other2";
-import Auth from "../../pages/auth";
+import { mainListItems } from "./ListItems";
+import Home from "../../pages/Home";
+import Management from "../../pages/Management";
+import Other1 from "../../pages/Other1";
+import Auth from "../../pages/Auth";
 
 const drawerWidth = 240;
 
