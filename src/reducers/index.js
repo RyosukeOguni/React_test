@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import auth from "./auth";
 
-// Storeの作成処理
+// 複数のreducerを一括して設定
 const reducer = combineReducers({
   auth,
 });

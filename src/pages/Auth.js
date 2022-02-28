@@ -30,7 +30,7 @@ const Auth = () => {
             console.log(res.data.message);
             dispatch({
               type: "GET_LOGIN_DATA",
-              payload: { ...res.data.user, isAuth: true },
+              payload: { ...res.data.user }, // LOGINの場合、管理者情報をpayload
             });
           })
           .catch((err) => {
@@ -45,9 +45,9 @@ const Auth = () => {
     axios
       .post(restfulApiConfig.apiURL + "api/auth/logout")
       .then((res) => {
+        console.log(res.data.message);
         dispatch({
-          type: "GET_LOGOUT_DATA",
-          payload: { isAuth: false },
+          type: "GET_LOGOUT_DATA", // LOGOUTの場合、reducers/auth.jsの初期値に戻す為payload不要
         });
       })
       .catch((err) => {
