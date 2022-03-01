@@ -147,7 +147,7 @@ function DashboardContent() {
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                   <Routes>
-                    <Route path="/" element={<Home />} />
+                    <Route path="/*" element={<Home />} />
                     <Route path="management/*" element={<Management />} />
                     <Route path="other1" element={<Other1 />} />
                   </Routes>

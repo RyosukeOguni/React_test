@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 // セッション認証に必要な"X-Requested-With"をヘッダーに追加
 axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
@@ -22,6 +23,9 @@ const AuthModalInput = ({ handleClose }) => {
   // storeの読込
   const dispatch = useDispatch(); //action
   const auth = useSelector((state) => state.auth); //state
+
+  // 遷移先Hook
+  const navigate = useNavigate();
 
   /* バリデーションルール */
   const schema = yup.object({
@@ -59,6 +63,7 @@ const AuthModalInput = ({ handleClose }) => {
               payload: { ...res.data.user }, // LOGINの場合、管理者情報をpayload
             });
             handleClose();
+            navigate("/management");
           })
           .catch((err) => {
             console.log(err.response);
@@ -77,6 +82,7 @@ const AuthModalInput = ({ handleClose }) => {
           type: "GET_LOGOUT_DATA", // LOGOUTの場合、reducers/auth.jsの初期値に戻す為payload不要
         });
         handleClose();
+        navigate("/");
       })
       .catch((err) => {
         console.log(err);
