@@ -1,23 +1,29 @@
 import React from "react";
 import axios from "axios";
-import { restfulApiConfig } from "../components/modules/config";
-
-import { Grid, Button, TextField, DialogActions } from "@mui/material";
+import { restfulApiConfig } from "../modules/config";
+import {
+  Box,
+  Grid,
+  DialogActions,
+  Typography,
+  Button,
+  TextField,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
 import { useSelector, useDispatch } from "react-redux";
+
 // セッション認証に必要な"X-Requested-With"をヘッダーに追加
 axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 axios.defaults.withCredentials = true;
 
-const AuthInput = ({ handleClose }) => {
+const AuthModalInput = ({ handleClose }) => {
   // storeの読込
   const dispatch = useDispatch(); //action
   const auth = useSelector((state) => state.auth); //state
 
-  /* バリデーションルール 参照：https://github.com/jquense/yup　*/
+  /* バリデーションルール */
   const schema = yup.object({
     email: yup
       .string()
@@ -77,52 +83,67 @@ const AuthInput = ({ handleClose }) => {
       });
   };
 
-  // ログインフォーム
-  let inputArea = (
-    <>
-      <Grid item xs={12} sm={6}>
-        <TextField
-          id={"email"}
-          label={"email"}
-          type={"email"}
-          {...register("email")}
-          error={"email" in errors}
-          helperText={errors["email"]?.message}
-          required
-          margin="normal"
-          fullWidth
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <TextField
-          id={"password"}
-          label={"password"}
-          type={"password"}
-          {...register("password")}
-          error={"password" in errors}
-          helperText={errors["password"]?.message}
-          required
-          margin="normal"
-          fullWidth
-        />
-      </Grid>
-    </>
-  );
-
-  // 認証済みの場合、ユーザ情報を表示
-  if (auth.isAuth) {
-    inputArea = (
-      <>
-        <h2>User</h2>
-        <div>name: {auth.name}</div>
-        <div>email: {auth.email}</div>
-      </>
-    );
-  }
-
   return (
-    <Grid container spacing={1}>
-      {inputArea}
+    <Box
+      sx={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: 500,
+        bgcolor: "background.paper",
+        boxShadow: 24,
+        p: 2,
+      }}
+    >
+      <Typography component="h3" variant="h6">
+        {auth.isAuth ? "管理者情報" : "ログイン"}
+      </Typography>
+      <Grid container spacing={1}>
+        {auth.isAuth ? (
+          <>
+            <Grid item xs={12} sm={6}>
+              <Typography component="h3" variant="h6">
+                name: {auth.name}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Typography component="h3" variant="h6">
+                email: {auth.email}
+              </Typography>
+            </Grid>
+          </>
+        ) : (
+          <>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                id={"email"}
+                label={"email"}
+                type={"email"}
+                {...register("email")}
+                error={"email" in errors}
+                helperText={errors["email"]?.message}
+                required
+                margin="normal"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                id={"password"}
+                label={"password"}
+                type={"password"}
+                {...register("password")}
+                error={"password" in errors}
+                helperText={errors["password"]?.message}
+                required
+                margin="normal"
+                fullWidth
+              />
+            </Grid>
+          </>
+        )}
+      </Grid>
       <DialogActions>
         <Button
           onClick={auth.isAuth ? logout : handleSubmit((data) => login(data))}
@@ -135,8 +156,8 @@ const AuthInput = ({ handleClose }) => {
           キャンセル
         </Button>
       </DialogActions>
-    </Grid>
+    </Box>
   );
 };
 
-export default AuthInput;
+export default AuthModalInput;

@@ -21,7 +21,7 @@ import ListItems from "./ListItems";
 import Home from "../../pages/Home";
 import Management from "../../pages/Management";
 import Other1 from "../../pages/Other1";
-import AuthModal from "../../pages/AuthModal";
+import AuthModal from "./AuthModal";
 
 const drawerWidth = 240;
 
