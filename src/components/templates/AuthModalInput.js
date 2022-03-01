@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { restfulApiConfig } from "../modules/config";
 import {
   Box,
   Grid,
   DialogActions,
+  Alert,
   Typography,
   Button,
   TextField,
@@ -20,6 +21,7 @@ axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 axios.defaults.withCredentials = true;
 
 const AuthModalInput = ({ handleClose }) => {
+  const [accessError, setAccessError] = useState(false);
   // storeの読込
   const dispatch = useDispatch(); //action
   const auth = useSelector((state) => state.auth); //state
@@ -67,6 +69,7 @@ const AuthModalInput = ({ handleClose }) => {
           })
           .catch((err) => {
             console.log(err.response);
+            setAccessError(true);
             console.log("[login]ログイン失敗");
           });
       });
@@ -105,6 +108,11 @@ const AuthModalInput = ({ handleClose }) => {
       <Typography component="h3" variant="h6">
         {auth.isAuth ? "管理者情報" : "ログイン"}
       </Typography>
+      {accessError && (
+        <Alert sx={{ marginTop: "1em" }} severity="error">
+          ログイン情報が間違っています
+        </Alert>
+      )}
       <Grid container spacing={1}>
         {auth.isAuth ? (
           <>

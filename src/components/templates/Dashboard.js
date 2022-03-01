@@ -22,6 +22,7 @@ import Home from "../../pages/Home";
 import Management from "../../pages/Management";
 import Other1 from "../../pages/Other1";
 import AuthModal from "./AuthModal";
+import { useSelector } from "react-redux";
 
 const drawerWidth = 240;
 
@@ -73,6 +74,7 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
   const [open, setOpen] = React.useState(false);
+  const auth = useSelector((state) => state.auth); //state
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -148,7 +150,9 @@ function DashboardContent() {
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                   <Routes>
                     <Route path="/*" element={<Home />} />
-                    <Route path="management/*" element={<Management />} />
+                    {auth.isAuth && (
+                      <Route path="management/*" element={<Management />} />
+                    )}
                     <Route path="other1" element={<Other1 />} />
                   </Routes>
                 </Paper>
