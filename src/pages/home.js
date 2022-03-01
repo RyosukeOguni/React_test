@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <Grid item xs={12}>
       <div className="Home">
-        <h1>Redux Learn</h1>
+        <p>Home</p>
       </div>
     </Grid>
   );

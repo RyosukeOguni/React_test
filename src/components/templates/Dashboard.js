@@ -21,7 +21,7 @@ import ListItems from "./ListItems";
 import Home from "../../pages/Home";
 import Management from "../../pages/Management";
 import Other1 from "../../pages/Other1";
-import Auth from "../../pages/Auth";
+import AuthModal from "../../pages/AuthModal";
 
 const drawerWidth = 240;
 
@@ -108,6 +108,7 @@ function DashboardContent() {
             >
               SRL医療業務システム
             </Typography>
+            <AuthModal />
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -149,7 +150,6 @@ function DashboardContent() {
                     <Route path="/" element={<Home />} />
                     <Route path="management/*" element={<Management />} />
                     <Route path="other1" element={<Other1 />} />
-                    <Route path="auth" element={<Auth />} />
                   </Routes>
                 </Paper>
               </Grid>
