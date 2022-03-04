@@ -8,14 +8,13 @@ import {
   Typography,
   Button,
   TextField,
-  Backdrop,
-  CircularProgress,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import LoadingProgress from "./LoadingProgress";
 
 const AuthModalInput = ({ handleClose }) => {
   const [accessError, setAccessError] = useState(false);
@@ -52,7 +51,6 @@ const AuthModalInput = ({ handleClose }) => {
       await dispatch({
         type: "REQUEST_FETCH_DATA",
       });
-
       await axios
         .post("api/auth/login", {
           email: data.email,
@@ -73,9 +71,6 @@ const AuthModalInput = ({ handleClose }) => {
           });
           navigate("/management");
           handleClose();
-          dispatch({
-            type: "SUCCESS_FETCH_DATA",
-          });
         })
         .catch((error) => {
           dispatch({
@@ -86,11 +81,11 @@ const AuthModalInput = ({ handleClose }) => {
               message: `ログインに失敗しました。(コード：${error.response.status})`,
             },
           });
-          dispatch({
-            type: "SUCCESS_FETCH_DATA",
-          });
           setAccessError(true);
         });
+      await dispatch({
+        type: "SUCCESS_FETCH_DATA",
+      });
     });
   };
 
@@ -115,14 +110,6 @@ const AuthModalInput = ({ handleClose }) => {
       type: "SUCCESS_FETCH_DATA",
     });
   };
-
-  function LoadArea() {
-    return (
-      <Backdrop open={loading.progress}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
-    );
-  }
 
   return (
     <>
@@ -204,7 +191,7 @@ const AuthModalInput = ({ handleClose }) => {
           </Button>
         </DialogActions>
       </Box>
-      {loading.progress && <LoadArea />}
+      {loading.progress && <LoadingProgress open={loading.progress} />}
     </>
   );
 };
