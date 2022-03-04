@@ -15,9 +15,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-
 const AuthModalInput = ({ handleClose }) => {
-  const [accessError, setAccessError] = useState(false);
+  // const [accessError, setAccessError] = useState(false);
   // storeの読込
   const dispatch = useDispatch(); //action
   const auth = useSelector((state) => state.auth); //state
@@ -45,34 +44,57 @@ const AuthModalInput = ({ handleClose }) => {
 
   // ログイン
   const login = async (data) => {
+    dispatch({
+      type: "REQUEST_FETCH_DATA",
+    });
     // ログイン時にCSRFトークンを初期化
-    await axios
-      .get("sanctum/csrf-cookie")
-      .then((response) => {
-        axios
-          .post("api/auth/login", {
-            email: data.email,
-            password: data.password,
-          })
-          .then((res) => {
-            console.log(res.data.message);
-            dispatch({
-              type: "GET_LOGIN_DATA",
-              payload: { ...res.data.user }, // LOGINの場合、管理者情報をpayload
-            });
-            handleClose();
-            navigate("/management");
-          })
-          .catch((err) => {
-            console.log(err.response);
-            setAccessError(true);
-            console.log("[login]ログイン失敗");
+    await axios.get("sanctum/csrf-cookie").then((response) => {
+      axios
+        .post("api/auth/login", {
+          email: data.email,
+          password: data.password,
+        })
+        .then((res) => {
+          console.log(res.data.message);
+          dispatch({
+            type: "GET_LOGIN_DATA",
+            payload: { ...res.data.user }, // LOGINの場合、管理者情報をpayload
           });
-      });
+          dispatch({
+            type: "HANDLE_OPEN",
+            payload: {
+              open: true,
+              type: "success",
+              message: "ログインに成功しました。",
+            },
+          });
+          handleClose();
+          navigate("/management");
+        })
+        .catch((error) => {
+          console.log(error.response);
+          dispatch({
+            type: "HANDLE_OPEN",
+            payload: {
+              open: true,
+              type: "error",
+              message: `ログインに失敗しました。(コード：${error.response.status})`,
+            },
+          });
+          // setAccessError(true);
+          console.log("[login]ログイン失敗");
+        });
+    });
+    dispatch({
+      type: "SUCCESS_FETCH_DATA",
+    });
   };
 
   // ログアウト
   const logout = async () => {
+    dispatch({
+      type: "REQUEST_FETCH_DATA",
+    });
     await axios
       .post("api/auth/logout")
       .then((res) => {
@@ -86,6 +108,9 @@ const AuthModalInput = ({ handleClose }) => {
       .catch((err) => {
         console.log(err);
       });
+    dispatch({
+      type: "SUCCESS_FETCH_DATA",
+    });
   };
 
   return (
@@ -104,11 +129,11 @@ const AuthModalInput = ({ handleClose }) => {
       <Typography component="h3" variant="h6">
         {auth.isAuth ? "管理者情報" : "ログイン"}
       </Typography>
-      {accessError && (
+{/*       {accessError && (
         <Alert sx={{ marginTop: "1em" }} severity="error">
-          ログイン情報が間違っています
+          ログイン情報が違います
         </Alert>
-      )}
+      )} */}
       <Grid container spacing={1}>
         {auth.isAuth ? (
           <>

@@ -22,6 +22,7 @@ import Home from "../../pages/Home";
 import Management from "../../pages/Management";
 import Other1 from "../../pages/Other1";
 import AuthModal from "./AuthModal";
+import SnackBar from "./SnackBar";
 import { useSelector } from "react-redux";
 
 const drawerWidth = 240;
@@ -74,7 +75,9 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
   const [open, setOpen] = React.useState(false);
-  const auth = useSelector((state) => state.auth); //state
+  const auth = useSelector((state) => state.auth);
+  const access = useSelector((state) => state.access);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -161,6 +164,7 @@ function DashboardContent() {
           </Container>
         </Box>
       </Box>
+      {access.open && <SnackBar />}
     </ThemeProvider>
   );
 }
