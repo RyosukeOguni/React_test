@@ -8,6 +8,8 @@ import {
   Typography,
   Button,
   TextField,
+  Backdrop,
+  CircularProgress,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -16,10 +18,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const AuthModalInput = ({ handleClose }) => {
-  // const [accessError, setAccessError] = useState(false);
+  const [accessError, setAccessError] = useState(false);
   // storeの読込
   const dispatch = useDispatch(); //action
   const auth = useSelector((state) => state.auth); //state
+  const loading = useSelector((state) => state.loading);
 
   // 遷移先Hook
   const navigate = useNavigate();
@@ -43,19 +46,19 @@ const AuthModalInput = ({ handleClose }) => {
   });
 
   // ログイン
-  const login = async (data) => {
-    dispatch({
-      type: "REQUEST_FETCH_DATA",
-    });
+  const login = (data) => {
     // ログイン時にCSRFトークンを初期化
-    await axios.get("sanctum/csrf-cookie").then((response) => {
-      axios
+    axios.get("sanctum/csrf-cookie").then(async (response) => {
+      await dispatch({
+        type: "REQUEST_FETCH_DATA",
+      });
+
+      await axios
         .post("api/auth/login", {
           email: data.email,
           password: data.password,
         })
         .then((res) => {
-          console.log(res.data.message);
           dispatch({
             type: "GET_LOGIN_DATA",
             payload: { ...res.data.user }, // LOGINの場合、管理者情報をpayload
@@ -68,11 +71,13 @@ const AuthModalInput = ({ handleClose }) => {
               message: "ログインに成功しました。",
             },
           });
-          handleClose();
           navigate("/management");
+          handleClose();
+          dispatch({
+            type: "SUCCESS_FETCH_DATA",
+          });
         })
         .catch((error) => {
-          console.log(error.response);
           dispatch({
             type: "HANDLE_OPEN",
             payload: {
@@ -81,12 +86,11 @@ const AuthModalInput = ({ handleClose }) => {
               message: `ログインに失敗しました。(コード：${error.response.status})`,
             },
           });
-          // setAccessError(true);
-          console.log("[login]ログイン失敗");
+          dispatch({
+            type: "SUCCESS_FETCH_DATA",
+          });
+          setAccessError(true);
         });
-    });
-    dispatch({
-      type: "SUCCESS_FETCH_DATA",
     });
   };
 
@@ -98,7 +102,6 @@ const AuthModalInput = ({ handleClose }) => {
     await axios
       .post("api/auth/logout")
       .then((res) => {
-        console.log(res.data.message);
         dispatch({
           type: "GET_LOGOUT_DATA", // LOGOUTの場合、reducers/auth.jsの初期値に戻す為payload不要
         });
@@ -113,86 +116,98 @@ const AuthModalInput = ({ handleClose }) => {
     });
   };
 
-  return (
-    <Box
-      sx={{
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        width: 500,
-        bgcolor: "background.paper",
-        boxShadow: 24,
-        p: 2,
-      }}
-    >
-      <Typography component="h3" variant="h6">
-        {auth.isAuth ? "管理者情報" : "ログイン"}
-      </Typography>
-{/*       {accessError && (
-        <Alert sx={{ marginTop: "1em" }} severity="error">
-          ログイン情報が違います
-        </Alert>
-      )} */}
-      <Grid container spacing={1}>
-        {auth.isAuth ? (
-          <>
-            <Grid item xs={12} sm={6}>
-              <Typography component="h3" variant="h6">
-                name: {auth.name}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography component="h3" variant="h6">
-                email: {auth.email}
-              </Typography>
-            </Grid>
-          </>
-        ) : (
-          <>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id={"email"}
-                label={"email"}
-                type={"email"}
-                {...register("email")}
-                error={"email" in errors}
-                helperText={errors["email"]?.message}
-                required
-                margin="normal"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id={"password"}
-                label={"password"}
-                type={"password"}
-                {...register("password")}
-                error={"password" in errors}
-                helperText={errors["password"]?.message}
-                required
-                margin="normal"
-                fullWidth
-              />
-            </Grid>
-          </>
+  function LoadArea() {
+    return (
+      <Backdrop open={loading.progress}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    );
+  }
+
+  function FormeArea() {
+    return (
+      <Box
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 500,
+          bgcolor: "background.paper",
+          boxShadow: 24,
+          p: 2,
+        }}
+      >
+        <Typography component="h3" variant="h6">
+          {auth.isAuth ? "管理者情報" : "ログイン"}
+        </Typography>
+        {accessError && (
+          <Alert sx={{ marginTop: "1em" }} severity="error">
+            ログイン情報が違います
+          </Alert>
         )}
-      </Grid>
-      <DialogActions>
-        <Button
-          onClick={auth.isAuth ? logout : handleSubmit((data) => login(data))}
-          variant="contained"
-          color="primary"
-        >
-          {auth.isAuth ? "ログアウト" : "ログイン"}
-        </Button>
-        <Button onClick={handleClose} color="primary">
-          キャンセル
-        </Button>
-      </DialogActions>
-    </Box>
-  );
+        <Grid container spacing={1}>
+          {auth.isAuth ? (
+            <>
+              <Grid item xs={12} sm={6}>
+                <Typography component="h3" variant="h6">
+                  name: {auth.name}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Typography component="h3" variant="h6">
+                  email: {auth.email}
+                </Typography>
+              </Grid>
+            </>
+          ) : (
+            <>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id={"email"}
+                  label={"email"}
+                  type={"email"}
+                  {...register("email")}
+                  error={"email" in errors}
+                  helperText={errors["email"]?.message}
+                  required
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  id={"password"}
+                  label={"password"}
+                  type={"password"}
+                  {...register("password")}
+                  error={"password" in errors}
+                  helperText={errors["password"]?.message}
+                  required
+                  margin="normal"
+                  fullWidth
+                />
+              </Grid>
+            </>
+          )}
+        </Grid>
+        <DialogActions>
+          <Button
+            onClick={auth.isAuth ? logout : handleSubmit((data) => login(data))}
+            variant="contained"
+            color="primary"
+          >
+            {auth.isAuth ? "ログアウト" : "ログイン"}
+          </Button>
+          <Button onClick={handleClose} color="primary">
+            キャンセル
+          </Button>
+        </DialogActions>
+      </Box>
+    );
+  }
+
+  return loading.progress ? <LoadArea /> : <FormeArea />;
 };
 
 export default AuthModalInput;
