@@ -124,8 +124,8 @@ const AuthModalInput = ({ handleClose }) => {
     );
   }
 
-  function FormeArea() {
-    return (
+  return (
+    <>
       <Box
         sx={{
           position: "absolute",
@@ -204,10 +204,9 @@ const AuthModalInput = ({ handleClose }) => {
           </Button>
         </DialogActions>
       </Box>
-    );
-  }
-
-  return loading.progress ? <LoadArea /> : <FormeArea />;
+      {loading.progress && <LoadArea />}
+    </>
+  );
 };
 
 export default AuthModalInput;
