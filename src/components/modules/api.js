@@ -1,11 +1,10 @@
-import { restfulApiConfig } from "./config";
-import axios from "axios";
+import axios from "./config";
 
 // 取得（Index）※DOMを読み込んでから値を適用
 export const indexApi = (endpoint, callback) => {
   const fetchData = async () => {
     await axios
-      .get(restfulApiConfig.apiURL + "api/" + endpoint)
+      .get(`api/${endpoint}`)
       .then((response) => {
         callback(response);
       })
@@ -19,7 +18,7 @@ export const indexApi = (endpoint, callback) => {
 // 取得（Show）
 export const showApi = async (id, endpoint, callback) => {
   await axios
-    .get(restfulApiConfig.apiURL + "api/" + endpoint + `/${id}`)
+    .get(`api/${endpoint}/${id}`)
     .then((response) => {
       callback(response.data);
     })
@@ -33,7 +32,7 @@ export const deleteApi = async (selected, endpoint, callback) => {
   const json = selected;
   !!json.length &&
     (await axios
-      .post(restfulApiConfig.apiURL + "api/" + endpoint + "/selectdelete", json)
+      .post(`api/${endpoint}/selectdelete`, json)
       .then((response) => {
         alert("ID:" + json + "を削除しました");
         callback();
@@ -47,7 +46,7 @@ export const deleteApi = async (selected, endpoint, callback) => {
 export const postApi = async (data, endpoint, callback) => {
   const json = JSON.parse(JSON.stringify(data));
   await axios
-    .post(restfulApiConfig.apiURL + "api/" + endpoint, json)
+    .post(`api/${endpoint}`, json)
     .then((response) => {
       callback(response.data);
     })
@@ -60,7 +59,7 @@ export const postApi = async (data, endpoint, callback) => {
 export const putApi = async (data, obj, endpoint, callback) => {
   const json = JSON.parse(JSON.stringify(data));
   await axios
-    .put(restfulApiConfig.apiURL + "api/" + endpoint + `/${obj.id}`, json)
+    .put(`api/${endpoint}/${obj.id}`, json)
     .then((response) => {
       callback(response.data);
     })

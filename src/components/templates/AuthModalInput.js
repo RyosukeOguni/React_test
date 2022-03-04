@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { restfulApiConfig } from "../modules/config";
+import axios from "../modules/config";
 import {
   Box,
   Grid,
@@ -16,9 +15,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-// セッション認証に必要な"X-Requested-With"をヘッダーに追加
-axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
-axios.defaults.withCredentials = true;
 
 const AuthModalInput = ({ handleClose }) => {
   const [accessError, setAccessError] = useState(false);
@@ -51,10 +47,10 @@ const AuthModalInput = ({ handleClose }) => {
   const login = async (data) => {
     // ログイン時にCSRFトークンを初期化
     await axios
-      .get(restfulApiConfig.apiURL + "sanctum/csrf-cookie")
+      .get("sanctum/csrf-cookie")
       .then((response) => {
         axios
-          .post(restfulApiConfig.apiURL + "api/auth/login", {
+          .post("api/auth/login", {
             email: data.email,
             password: data.password,
           })
@@ -78,7 +74,7 @@ const AuthModalInput = ({ handleClose }) => {
   // ログアウト
   const logout = async () => {
     await axios
-      .post(restfulApiConfig.apiURL + "api/auth/logout")
+      .post("api/auth/logout")
       .then((res) => {
         console.log(res.data.message);
         dispatch({
