@@ -20,7 +20,7 @@ export const showApi = async (id, endpoint, callback) => {
   await axios
     .get(`api/${endpoint}/${id}`)
     .then((response) => {
-      callback(response.data);
+      callback(response);
     })
     .catch((error) => {
       console.log(error);
@@ -48,7 +48,7 @@ export const postApi = async (data, endpoint, callback) => {
   await axios
     .post(`api/${endpoint}`, json)
     .then((response) => {
-      callback(response.data);
+      callback(response);
     })
     .catch((error) => {
       console.log(error);
@@ -61,7 +61,7 @@ export const putApi = async (data, obj, endpoint, callback) => {
   await axios
     .put(`api/${endpoint}/${obj.id}`, json)
     .then((response) => {
-      callback(response.data);
+      callback(response);
     })
     .catch((error) => {
       console.log(error);

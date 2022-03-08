@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { postApi, putApi } from "../../components/modules/api";
 import ModalInput from "./ManagementModalInput";
+// import { useDispatch } from "react-redux";
 
 const ManagementModal = ({
   status,
@@ -13,6 +14,8 @@ const ManagementModal = ({
   headCells,
 }) => {
   const { obj, type } = status;
+
+  // const dispatch = useDispatch(); 
 
   // Hook Formの設定
   const {
@@ -30,15 +33,21 @@ const ManagementModal = ({
 
   // 登録（Post）
   const dataPost = async (data) => {
-    postApi(data, endpoint, (data) => {
-      handleDialogClose({ type: type, data: data });
+/*     await dispatch({
+      type: "REQUEST_FETCH_DATA",
+    }); */
+    await postApi(data, endpoint, (response) => {
+      handleDialogClose({ type: type, data: response.data.data.attribute });
     });
+/*     await dispatch({
+      type: "SUCCESS_FETCH_DATA",
+    }); */
   };
 
   // 更新（Put）
   const dataPut = async (data) => {
-    putApi(data, obj, endpoint, (data) => {
-      handleDialogClose({ type: type, data: data });
+    putApi(data, obj, endpoint, (response) => {
+      handleDialogClose({ type: type, data: response.data.data.attribute });
     });
   };
 

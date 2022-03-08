@@ -17,7 +17,7 @@ export default function Management(endpoint, headCells, schema) {
     let mounted = true;
     indexApi(endpoint, (response) => {
       if (mounted) {
-        setRows(response.data);
+        setRows(response.data.data.map((data) => data.attribute));
       }
     });
     return () => (mounted = false);
@@ -25,8 +25,8 @@ export default function Management(endpoint, headCells, schema) {
 
   // 取得（Show）
   const dataShow = (id) => {
-    showApi(id, endpoint, (data) => {
-      setStatus({ open: true, obj: data, type: "put" });
+    showApi(id, endpoint, (response) => {
+      setStatus({ open: true, obj: response.data.data.attribute, type: "put" });
     });
   };
 
