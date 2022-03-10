@@ -4,8 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { postApi, putApi } from "../../components/modules/api";
 import ModalInput from "./ManagementModalInput";
-import { useSelector, useDispatch } from "react-redux";
-import LoadingProgress from "./LoadingProgress";
+import { useDispatch } from "react-redux";
 
 const ManagementModal = ({
   status,
@@ -16,7 +15,6 @@ const ManagementModal = ({
 }) => {
   const { obj, type } = status;
 
-  const loading = useSelector((state) => state.loading);
   const dispatch = useDispatch();
 
   // Hook Formの設定
@@ -60,49 +58,46 @@ const ManagementModal = ({
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: 500,
-          bgcolor: "background.paper",
-          boxShadow: 24,
-          p: 2,
-        }}
-      >
-        <Typography component="h3" variant="h6">
-          {type === "post" ? "新規作成" : `ID:${obj.id}`}
-        </Typography>
-        {/* childrenで入れ子要素を取得 */}
-        <ModalInput
-          register={register}
-          obj={obj}
-          errors={errors}
-          headCells={headCells}
-        />
-        <DialogActions>
-          <Button
-            onClick={handleSubmit(onSubmit)}
-            variant="contained"
-            color="primary"
-          >
-            {type === "put" ? "更新" : "登録"}
-          </Button>
-          <Button
-            onClick={() => {
-              handleDialogClose({ type: "" });
-            }}
-            color="primary"
-          >
-            キャンセル
-          </Button>
-        </DialogActions>
-      </Box>
-      {loading.progress && <LoadingProgress open={loading.progress} />}
-    </>
+    <Box
+      sx={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: 500,
+        bgcolor: "background.paper",
+        boxShadow: 24,
+        p: 2,
+      }}
+    >
+      <Typography component="h3" variant="h6">
+        {type === "post" ? "新規作成" : `ID:${obj.id}`}
+      </Typography>
+      {/* childrenで入れ子要素を取得 */}
+      <ModalInput
+        register={register}
+        obj={obj}
+        errors={errors}
+        headCells={headCells}
+      />
+      <DialogActions>
+        <Button
+          onClick={handleSubmit(onSubmit)}
+          variant="contained"
+          color="primary"
+        >
+          {type === "put" ? "更新" : "登録"}
+        </Button>
+        <Button
+          onClick={() => {
+            handleDialogClose({ type: "" });
+          }}
+          color="primary"
+        >
+          キャンセル
+        </Button>
+      </DialogActions>
+    </Box>
   );
 };
 

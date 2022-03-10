@@ -23,6 +23,7 @@ import Management from "../../pages/Management";
 import Other1 from "../../pages/Other1";
 import AuthModal from "./AuthModal";
 import SnackBar from "./SnackBar";
+import LoadingProgress from "./LoadingProgress";
 import { useSelector } from "react-redux";
 
 const drawerWidth = 240;
@@ -77,7 +78,8 @@ function DashboardContent() {
   const [open, setOpen] = React.useState(false);
   const auth = useSelector((state) => state.auth);
   const access = useSelector((state) => state.access);
-
+  const loading = useSelector((state) => state.loading);
+  
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -165,6 +167,7 @@ function DashboardContent() {
         </Box>
       </Box>
       {access.open && <SnackBar />}
+      {loading.progress && <LoadingProgress open={loading.progress} />}
     </ThemeProvider>
   );
 }

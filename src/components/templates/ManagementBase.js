@@ -3,6 +3,7 @@ import { Modal, Box, Button } from "@mui/material";
 import EnhancedTable from "./EnhancedTable";
 import ManagementModal from "./ManagementModal";
 import { indexApi, showApi, deleteApi } from "../modules/api";
+import { useDispatch } from "react-redux";
 
 export default function Management(endpoint, headCells, schema) {
   // status初期化
@@ -10,6 +11,8 @@ export default function Management(endpoint, headCells, schema) {
   const [selected, setSelected] = useState([]);
   const [rows, setRows] = useState([]);
   const [status, setStatus] = useState(initial);
+
+  const dispatch = useDispatch(); //action
 
   // 取得（Index）※DOMを読み込んでから値を適用
   useEffect(() => {
@@ -20,22 +23,35 @@ export default function Management(endpoint, headCells, schema) {
         setRows(response.data.data.map((data) => data.attribute));
       }
     });
+
     return () => (mounted = false);
   }, [endpoint]);
 
   // 取得（Show）
-  const dataShow = (id) => {
-    showApi(id, endpoint, (response) => {
+  const dataShow = async (id) => {
+    await dispatch({
+      type: "REQUEST_FETCH_DATA",
+    });
+    await showApi(id, endpoint, (response) => {
       setStatus({ open: true, obj: response.data.data.attribute, type: "put" });
+      dispatch({
+        type: "SUCCESS_FETCH_DATA",
+      });
     });
   };
 
   // 削除（Delete）
-  const selectDelete = () => {
-    deleteApi(selected, endpoint, () => {
+  const selectDelete = async () => {
+    await dispatch({
+      type: "REQUEST_FETCH_DATA",
+    });
+    await deleteApi(selected, endpoint, () => {
       const result = rows.filter((row) => !selected.includes(row.id));
       setRows(result);
       setSelected([]);
+      dispatch({
+        type: "SUCCESS_FETCH_DATA",
+      });
     });
   };
 
