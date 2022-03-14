@@ -18,14 +18,21 @@ export default function Management(endpoint, headCells, schema) {
   useEffect(() => {
     // メモリリークを防止
     let mounted = true;
-    indexApi(endpoint, (response) => {
-      if (mounted) {
-        setRows(response.data.data.map((data) => data.attribute));
+    indexApi(
+      endpoint,
+      (response) => {
+        if (mounted) {
+          setRows(response.data.data.map((data) => data.attribute));
+        }
+      },
+      () => {
+        dispatch({
+          type: "GET_LOGOUT_DATA",
+        });
       }
-    });
-
+    );
     return () => (mounted = false);
-  }, [endpoint]);
+  }, [dispatch, endpoint]);
 
   // 取得（Show）
   const dataShow = async (id) => {

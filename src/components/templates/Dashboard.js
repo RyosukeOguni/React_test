@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import {
   CssBaseline,
@@ -24,7 +24,8 @@ import Other1 from "../../pages/Other1";
 import AuthModal from "./AuthModal";
 import SnackBar from "./SnackBar";
 import LoadingProgress from "./LoadingProgress";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "../modules/config";
 
 const drawerWidth = 240;
 
@@ -79,10 +80,29 @@ function DashboardContent() {
   const auth = useSelector((state) => state.auth);
   const access = useSelector((state) => state.access);
   const loading = useSelector((state) => state.loading);
-  
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const dispatch = useDispatch();
+  // 取得（Index）※DOMを読み込んでから値を適用
+  useEffect(() => {
+    // ログイン時にCSRFトークンを初期化
+    axios
+      .get("api/admin")
+      .then((res) => {
+        dispatch({
+          type: "GET_LOGIN_DATA",
+          payload: { ...res.data.user }, // LOGINの場合、管理者情報をpayload
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: "GET_LOGOUT_DATA",
+        });
+      });
+  }, [dispatch]);
 
   return (
     <ThemeProvider theme={mdTheme}>

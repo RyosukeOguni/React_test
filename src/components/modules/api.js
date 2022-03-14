@@ -1,7 +1,7 @@
 import axios from "./config";
 
 // 取得（Index）※DOMを読み込んでから値を適用
-export const indexApi = (endpoint, callback) => {
+export const indexApi = (endpoint, callback, callback2) => {
   const fetchData = async () => {
     await axios
       .get(`api/${endpoint}`)
@@ -10,6 +10,7 @@ export const indexApi = (endpoint, callback) => {
       })
       .catch((error) => {
         console.log(error);
+        callback2();
       });
   };
   fetchData();
