@@ -132,18 +132,10 @@ const AuthModalInput = ({ handleClose }) => {
       )}
       <Grid container spacing={1}>
         {auth.isAuth ? (
-          <>
-            <Grid item xs={12} sm={6}>
-              <Typography component="h3" variant="h6">
-                name: {auth.name}
-              </Typography>
+            <Grid item xs={12}>
+              <Typography>name: {auth.name}</Typography>
+              <Typography>email: {auth.email}</Typography>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography component="h3" variant="h6">
-                email: {auth.email}
-              </Typography>
-            </Grid>
-          </>
         ) : (
           <>
             <Grid item xs={12} sm={6}>
