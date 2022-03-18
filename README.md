@@ -6,11 +6,17 @@
 ## ２．使用ライブラリ
 -   MUI関連
     -   @mui/material@5.4.1
+    -   @mui/icons-material@5.4.1
+-   CSSinJS
     -   @emotion/react@11.7.1
     -   @emotion/styled@11.6.0
-    -   @mui/icons-material@5.4.1
 -   SPAルーティング
     -   react-router-dom@6.2.1
+-   State状態管理
+    -   redux@4.1.2
+    -   react-redux@7.2.6
+-   redux永続化
+    -   redux-persist@6.0.0
 -   非同期通信
     -   axios@0.25.0
 -   環境変数ファイル
