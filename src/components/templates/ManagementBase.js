@@ -5,7 +5,7 @@ import ManagementModal from "./ManagementModal";
 import { indexApi, showApi, deleteApi } from "../modules/api";
 import { useDispatch } from "react-redux";
 
-export default function Management(endpoint, headCells, schema) {
+export default function ManagementBase(endpoint, headCells, schema) {
   // status初期化
   const initial = { open: false, obj: {}, type: "" };
   const [selected, setSelected] = useState([]);
