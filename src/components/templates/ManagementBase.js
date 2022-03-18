@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { Modal, Box, Button } from "@mui/material";
 import EnhancedTable from "./EnhancedTable";
 import ManagementModal from "./ManagementModal";
@@ -15,22 +15,30 @@ export default function ManagementBase(endpoint, headCells, schema) {
   const dispatch = useDispatch(); //action
 
   // 取得（Index）※DOMを読み込んでから値を適用
-  useEffect(() => {
+  useLayoutEffect(() => {
     // メモリリークを防止
     let mounted = true;
-    indexApi(
-      endpoint,
-      (response) => {
-        if (mounted) {
-          setRows(response.data.data.map((data) => data.attribute));
+    (async () => {
+      await dispatch({
+        type: "REQUEST_FETCH_DATA",
+      });
+      await indexApi(
+        endpoint,
+        (response) => {
+          if (mounted) {
+            setRows(response.data.data.map((data) => data.attribute));
+          }
+        },
+        () => {
+          dispatch({
+            type: "GET_LOGOUT_DATA",
+          });
         }
-      },
-      () => {
-        dispatch({
-          type: "GET_LOGOUT_DATA",
-        });
-      }
-    );
+      );
+      await dispatch({
+        type: "SUCCESS_FETCH_DATA",
+      });
+    })();
     return () => (mounted = false);
   }, [dispatch, endpoint]);
 

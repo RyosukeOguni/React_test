@@ -1,19 +1,16 @@
 import axios from "./config";
 
 // 取得（Index）※DOMを読み込んでから値を適用
-export const indexApi = (endpoint, callback, callback2) => {
-  const fetchData = async () => {
-    await axios
-      .get(`api/${endpoint}`)
-      .then((response) => {
-        callback(response);
-      })
-      .catch((error) => {
-        console.log(error);
-        callback2();
-      });
-  };
-  fetchData();
+export const indexApi = async (endpoint, callback, callback2) => {
+  await axios
+    .get(`api/${endpoint}`)
+    .then((response) => {
+      callback(response);
+    })
+    .catch((error) => {
+      console.log(error);
+      callback2();
+    });
 };
 
 // 取得（Show）
