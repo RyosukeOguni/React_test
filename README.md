@@ -40,7 +40,7 @@ https://github.com/mui/material-ui/tree/master/docs/data/material/getting-starte
 
 Vue.jsのdataにあたるもの
 
-```
+```javascript
 import React, { useState } from "react";
 const [selected, setSelected] = useState([]);
 setSlelcted(array);
@@ -53,7 +53,7 @@ setSlelcted(array);
 
 Api通信などでDOM描画より遅れてdataを取得する場合、DOM描画後に要素に値を入れる
 
-```
+```javascript
 import React, { useEffect } from "react";
 useEffect(() => {
   // メモリリークを防止
@@ -81,7 +81,7 @@ useEffect(() => {
 <br>
 同一コンポーネントが呼ばれて再描画されない状態の時、Tagの状態を初期化したい場合
 
-```
+```javascript
 import React, { useEffect } from "react";
 const [value, setValue] = useState("manual");
 const location = useLocation();
@@ -101,7 +101,7 @@ useEffect(() => {
 
 Routerを階層（ネスト）して、下位リンクを作成する
 
-```
+```javascript
 //　親コンポーネント(Dashboard)
 <Routes>
   <Route path="/" element={<Home />} />
@@ -141,7 +141,7 @@ https://mui.com/components/tables/
 
 子コンポーネントに親からコンポーネントを渡す（Vue.jsのslotにあたるもの）
 
-```
+```javascript
 //　親コンポーネント
 <FncModal>
  <h1 className="Dialog-title" color="blue">Welcome</h1>
